@@ -1,0 +1,1083 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>灯守のことづて</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Klee+One:wght@400;600&family=Yuji+Syuku&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#141826;
+  --night:#1d2438;
+  --washi:#efe7d4;
+  --washi-dim:#b9b2a2;
+  --lantern:#f0a050;
+  --sea:#8cc6e4;
+  --crimson:#d65661;
+  --gold:#ecc66f;
+  --mincho:'Zen Old Mincho','Hiragino Mincho ProN','Yu Mincho','YuMincho',serif;
+  --hand:'Klee One','Hiragino Maru Gothic ProN','Yu Gothic',sans-serif;
+  --brush:'Yuji Syuku','Zen Old Mincho','Hiragino Mincho ProN',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#04050a;overflow:hidden}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#game{
+  position:relative;width:min(100vw,177.78vh);height:min(100vh,56.25vw);
+  overflow:hidden;container-type:size;background:#000;color:var(--washi);
+  font-family:var(--mincho);user-select:none;-webkit-user-select:none;outline:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.layer{position:absolute;inset:0;pointer-events:none}
+
+/* ---------- stage ---------- */
+#scene{position:absolute;inset:0;transition:filter 900ms ease;isolation:isolate}
+#scene.t-night{filter:brightness(.8) saturate(.8)}
+#scene.t-memory{filter:sepia(.6) brightness(.92) contrast(.88) blur(.5px)}
+#scene.t-dark{filter:brightness(.42) saturate(.55)}
+#scene.t-red{filter:sepia(.35) hue-rotate(-28deg) saturate(1.5) brightness(.8)}
+#vignette{background:radial-gradient(ellipse at center,transparent 45%,rgba(30,20,10,.75) 100%);opacity:0;transition:opacity 900ms}
+#vignette.on{opacity:1}
+#ori{z-index:3}
+#charas{z-index:4}
+#cgimg{z-index:5}
+.bgl{background-size:cover;background-position:center;opacity:0;transition-property:opacity;transition-timing-function:ease}
+#ori img{position:absolute;left:50%;bottom:0;height:100%;max-width:none;transform:translateX(-50%);transform-origin:50% 100%;opacity:0;transition:opacity 900ms ease}
+#ori img.breathe{animation:breathe 5s ease-in-out infinite}
+#ori img.rise{animation:rise 2.4s cubic-bezier(.2,.7,.2,1) both,breathe 5s 2.4s ease-in-out infinite}
+#ori img.purify{animation:purify 2.6s ease forwards}
+@keyframes breathe{0%,100%{transform:translateX(-50%) scale(1,1)}50%{transform:translateX(-50%) scale(1.02,1.04)}}
+@keyframes rise{from{transform:translateX(-50%) translateY(45%) scale(.92);filter:blur(8px)}to{transform:translateX(-50%) translateY(0) scale(1);filter:blur(0)}}
+@keyframes purify{0%{filter:brightness(1);opacity:1}35%{filter:brightness(2.6) sepia(1) saturate(2.4) hue-rotate(-10deg) blur(2px);opacity:1}100%{filter:brightness(4) sepia(1) saturate(2) blur(14px);opacity:0;transform:translateX(-50%) scale(1.08)}}
+
+.chara{position:absolute;bottom:-3%;height:97%;transform:translateX(-50%);opacity:0;
+  transition-property:opacity,filter,left;transition-duration:350ms,300ms,550ms;transition-timing-function:ease,ease,cubic-bezier(.3,.8,.3,1)}
+.chara.dim{filter:brightness(.6) saturate(.75)}
+.chara.float{height:21%;bottom:56%;animation:bob 3.4s ease-in-out infinite}
+.chara.hop{animation:hop .35s ease}
+.chara.float.hop{animation:hop .35s ease,bob 3.4s .35s ease-in-out infinite}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -7%}}
+@keyframes hop{0%,100%{translate:0 0}40%{translate:0 -3%}}
+
+#cgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 900ms ease}
+
+/* ---------- effects ---------- */
+.fxi{position:absolute;left:50%;top:50%;translate:-50% -50%;max-width:none}
+.fx-kanji{height:72%;animation:kanji 1.8s ease forwards}
+.fx-kanji.long{height:86%;animation:kanjiLong 3.6s ease forwards}
+@keyframes kanji{0%{opacity:0;clip-path:inset(0 100% 0 0);scale:1.18}30%{opacity:1;clip-path:inset(0 0 0 0);scale:1}70%{opacity:1;filter:drop-shadow(0 0 2cqw rgba(160,215,255,.9))}100%{opacity:0;scale:1.06}}
+@keyframes kanjiLong{0%{opacity:0;clip-path:inset(0 0 100% 0);scale:1.1}40%{opacity:1;clip-path:inset(0 0 0 0);scale:1}80%{opacity:1;filter:drop-shadow(0 0 3cqw rgba(255,255,255,.9))}100%{opacity:0;scale:1.12;filter:blur(6px)}}
+.fx-arrow{width:120%;top:46%;animation:arrow .5s cubic-bezier(.6,0,.4,1) forwards}
+@keyframes arrow{from{translate:30% -50%;opacity:0}20%{opacity:1}to{translate:-130% -50%;opacity:0}}
+.fx-beam{width:115%;height:46%;animation:beam 2s ease forwards}
+@keyframes beam{0%{transform:scaleX(0);transform-origin:100% 50%;opacity:1}25%{transform:scaleX(1);transform-origin:100% 50%}70%{opacity:1}100%{opacity:0;transform:scaleX(1) scaleY(1.4)}}
+.fx-pop{height:80%;animation:pop .6s ease-out forwards}
+.fx-full{width:100%;height:100%;object-fit:cover;animation:pop .8s ease-out forwards}
+@keyframes pop{0%{scale:.55;opacity:0}25%{scale:1.05;opacity:1}100%{scale:1.15;opacity:0}}
+.fx-ring{height:120%;animation:ring 1.6s ease-out forwards}
+@keyframes ring{0%{scale:.15;opacity:0;rotate:-20deg}30%{opacity:1}100%{scale:1.7;opacity:0;rotate:10deg}}
+.fx-bloom{width:100%;height:100%;object-fit:cover;animation:bloom 2.6s ease forwards}
+@keyframes bloom{0%{opacity:0;scale:1}35%{opacity:1}100%{opacity:0;scale:1.25}}
+.fx-tears{left:50%;top:35%;height:58%;animation:tears 3s ease forwards}
+@keyframes tears{0%{opacity:0}25%{opacity:.9}80%{opacity:.9}100%{opacity:0}}
+
+#flash{background:#fff;opacity:0}
+#fade{background:#000;opacity:0;transition-property:opacity;transition-timing-function:ease}
+#particles{width:100%;height:100%}
+
+#game.shake{animation:shake .45s linear}
+#game.shakebig{animation:shakebig .9s linear}
+#scene.glitch{animation:glitch .5s steps(4)}
+@keyframes shake{0%,100%{translate:0 0}20%{translate:-.6% .4%}40%{translate:.6% -.3%}60%{translate:-.4% -.4%}80%{translate:.3% .3%}}
+@keyframes shakebig{0%,100%{translate:0 0}10%{translate:-1.6% .8%}20%{translate:1.4% -1%}30%{translate:-1.2% -.6%}40%{translate:1.1% .9%}55%{translate:-.8% .4%}70%{translate:.5% -.4%}85%{translate:-.3% .2%}}
+@keyframes glitch{0%{filter:hue-rotate(0) contrast(1);translate:0 0}25%{filter:hue-rotate(160deg) contrast(1.6);translate:-.8% 0}50%{filter:invert(.15) contrast(1.3);translate:.6% .2%}75%{filter:saturate(0) contrast(2);translate:-.3% -.2%}100%{filter:none;translate:0 0}}
+@media (prefers-reduced-motion:reduce){#game.shake,#game.shakebig,#scene.glitch{animation:none}}
+
+/* ---------- paper (notebook / diary / old book) ---------- */
+#paper{position:absolute;left:50%;top:4%;width:42%;height:62%;translate:-50% 3%;
+  background:url("assets/images/ui/notebook.png") center/100% 100% no-repeat;
+  padding:2.8% 2.8% 3.3% 6.2%;opacity:0;transition:opacity 450ms ease,translate 450ms ease;overflow:hidden;color:#2a2633;pointer-events:none}
+#paper.on{opacity:1;translate:-50% 0}
+#paper.diary{background-image:url("assets/images/ui/diary.png");padding:3.5% 3.8% 3.5% 4.5%}
+#paper.book{background-image:url("assets/images/ui/old_book.png");writing-mode:vertical-rl;padding:3.5% 4.5% 4.5% 4.5%;width:40%}
+.pl{font-family:var(--hand);font-size:1.75cqw;line-height:1.8;margin:0 0 .25em;white-space:pre-wrap}
+.pl.w-mio{color:#203856}
+.pl.w-chitose{font-size:2.35cqw;font-weight:600;color:#241c2a;letter-spacing:.06em;transform:rotate(-1.3deg);transform-origin:0 50%}
+.pl.w-chitose:nth-child(even){transform:rotate(1deg)}
+.pl.w-hiyori{color:#5c3416;font-size:1.7cqw}
+.pl.w-book{font-family:var(--mincho);font-size:1.75cqw;line-height:2;letter-spacing:.12em;color:#2c2116;margin:0 0 0 .8em}
+
+/* ---------- message window ---------- */
+#window{position:absolute;left:3%;right:3%;bottom:2.4%;height:27.5%;
+  background:url("assets/images/ui/textbox.png") center/100% 100% no-repeat;
+  padding:4.6cqh 7% 2cqh 7%;opacity:0;transition:opacity 280ms ease;pointer-events:none}
+#window.show{opacity:1}
+#name{position:absolute;left:5%;top:-4.4cqh;min-width:15%;height:6.8cqh;padding:0 2cqw;
+  display:flex;align-items:center;justify-content:center;
+  background:url("assets/images/ui/namebox.png") center/100% 100% no-repeat;
+  font-size:1.7cqw;letter-spacing:.14em;color:var(--nc,#efe7d4);opacity:0;transition:opacity 150ms}
+#name.on{opacity:1}
+#name.glitch{animation:nglitch .3s steps(2) infinite}
+@keyframes nglitch{0%{translate:0 0;color:#cfd2e0}50%{translate:.25cqw -.1cqw;color:#7c2132}100%{translate:-.2cqw .1cqw;color:#2a4a7a}}
+#text{font-size:1.9cqw;line-height:1.86;letter-spacing:.05em;white-space:pre-wrap;text-shadow:0 0 .5cqw rgba(0,0,0,.7);max-width:40em}
+#text.glitch{color:#cbcbd8;text-shadow:.16cqw 0 rgba(140,30,50,.9),-.16cqw 0 rgba(40,70,140,.9)}
+#waiticon{position:absolute;right:4%;bottom:36%;width:1.7cqw;height:3cqw;
+  background:url("assets/images/ui/wait_lantern.png") center/contain no-repeat;
+  transform-origin:50% 0;animation:swing 1.8s ease-in-out infinite;opacity:0}
+#waiticon.on{opacity:1}
+@keyframes swing{0%,100%{rotate:-9deg}50%{rotate:9deg}}
+
+#sysmenu{position:absolute;right:5.5%;bottom:4.4%;display:flex;gap:1.4cqw;z-index:30;opacity:0;transition:opacity 280ms;pointer-events:none}
+#sysmenu.show{opacity:1;pointer-events:auto}
+#sysmenu button{background:none;border:0;color:var(--washi-dim);font:inherit;font-size:1.05cqw;letter-spacing:.12em;cursor:pointer;padding:.3em .15em}
+#sysmenu button:hover,#sysmenu button.on{color:var(--lantern)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--lantern);outline-offset:3px}
+#game.uihidden #window,#game.uihidden #sysmenu,#game.uihidden #paper{opacity:0 !important;pointer-events:none}
+
+/* ---------- full-screen cards ---------- */
+#center{background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqh;
+  opacity:0;transition:opacity 1.4s ease;font-size:2.2cqw;letter-spacing:.24em}
+#center p{margin:0;opacity:0;transition:opacity 2s ease}
+#center p.on{opacity:1}
+#chapter{background:#06070c;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .9s ease}
+#chapter .ci{writing-mode:vertical-rl;display:flex;flex-direction:column;align-items:flex-start;gap:3.4cqw;height:88%}
+#chapter .cn{font-size:1.7cqw;letter-spacing:.5em;color:var(--washi-dim);white-space:nowrap;padding-top:6cqh}
+#chapter .ct{font-family:var(--brush);font-size:4.6cqw;letter-spacing:.1em;white-space:nowrap;color:var(--washi);clip-path:inset(0 0 100% 0);animation:creveal 2.2s .5s ease forwards}
+#chapter .cl{align-self:center;width:.9cqw;height:.9cqw;border-radius:50%;background:var(--lantern);box-shadow:0 0 3cqw 1.2cqw rgba(240,160,80,.45);animation:flicker 2.4s ease-in-out infinite}
+@keyframes creveal{to{clip-path:inset(0 0 0 0)}}
+@keyframes flicker{0%,100%{opacity:1}45%{opacity:.7}55%{opacity:.95}70%{opacity:.6}}
+
+/* ---------- title ---------- */
+#title{background-size:cover;background-position:center;opacity:0;transition:opacity 1.2s ease;pointer-events:none;z-index:40}
+#title.on{opacity:1;pointer-events:auto}
+#title .logo{position:absolute;right:6%;top:6%;height:72%}
+#title .tmenu{position:absolute;left:6%;bottom:9%;display:flex;flex-direction:row-reverse;gap:2.6cqw;align-items:flex-start}
+#title .tmenu button{writing-mode:vertical-rl;background:none;border:0;color:var(--washi);font-family:var(--mincho);font-size:1.9cqw;letter-spacing:.35em;cursor:pointer;padding:.4em .2em;text-shadow:0 0 1cqw rgba(0,0,0,.9)}
+#title .tmenu button:hover{color:var(--lantern)}
+#title .tmenu button[disabled]{opacity:.35;cursor:default}
+
+#boot{background:#06070c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4cqh;z-index:60;cursor:pointer;pointer-events:auto}
+#boot .bt{font-family:var(--brush);font-size:4cqw;letter-spacing:.3em}
+#boot .bs{font-size:1.2cqw;letter-spacing:.3em;color:var(--washi-dim)}
+#boot .bp{width:22%;height:2px;background:rgba(255,255,255,.12)}
+#boot .bp i{display:block;height:100%;width:0;background:var(--lantern);transition:width .2s}
+
+/* ---------- modals ---------- */
+#modal{background:rgba(10,12,20,.86);display:none;z-index:50;pointer-events:auto;backdrop-filter:blur(3px)}
+#modal.on{display:block}
+#modal .panel{position:absolute;inset:7% 9%;display:flex;flex-direction:column;gap:2cqh}
+#modal h2{margin:0;font-weight:400;font-size:2.1cqw;letter-spacing:.3em;color:var(--washi);border-bottom:1px solid rgba(240,160,80,.45);padding-bottom:1.4cqh}
+#modal .body{flex:1;overflow:auto;font-size:1.45cqw;line-height:1.8}
+#modal .close{position:absolute;right:0;top:0;background:none;border:0;color:var(--washi-dim);font:inherit;font-size:1.3cqw;letter-spacing:.2em;cursor:pointer}
+#modal .close:hover{color:var(--lantern)}
+.slots{display:grid;grid-template-columns:repeat(2,1fr);gap:1.6cqw}
+.slot{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:var(--washi);font:inherit;text-align:left;padding:1.4cqw 1.6cqw;cursor:pointer;min-height:9cqh}
+.slot:hover{border-color:var(--lantern)}
+.slot .s1{font-size:1.1cqw;color:var(--washi-dim);letter-spacing:.1em}
+.slot .s2{font-size:1.35cqw;margin-top:.4em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.log p{margin:0 0 1.4em}
+.log .ln{display:block;font-size:1.15cqw;letter-spacing:.14em}
+.cfg label{display:grid;grid-template-columns:12em 1fr;align-items:center;margin-bottom:2.2cqh}
+.cfg input[type=range]{width:100%;accent-color:var(--lantern)}
+.chlist button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.1);color:var(--washi);font:inherit;font-size:1.6cqw;letter-spacing:.2em;padding:1.4cqh .4em;cursor:pointer}
+.chlist button:hover{color:var(--lantern)}
+.chlist button[disabled]{opacity:.3;cursor:default}
+
+/* ---------- ending ---------- */
+#ending{background:#000;opacity:0;transition:opacity 2s ease;overflow:hidden;z-index:45}
+#ending.on{opacity:1}
+#ending .roll{position:absolute;left:0;right:0;top:100%;text-align:center;font-size:1.6cqw;letter-spacing:.3em;line-height:2.4}
+#ending .roll .big{font-family:var(--brush);font-size:4cqw;display:block;margin-bottom:12cqh}
+#ending .roll .gap{display:block;height:9cqh}
+#ending .roll .fin{display:block;margin-top:30cqh;font-size:2.4cqw;letter-spacing:.6em}
+</style>
+</head>
+<body>
+<div id="wrap">
+<div id="game" tabindex="0" aria-label="灯守のことづて">
+  <div id="scene" class="layer">
+    <div id="bgA" class="layer bgl"></div>
+    <div id="bgB" class="layer bgl"></div>
+    <div id="ori" class="layer"></div>
+    <div id="charas" class="layer"></div>
+    <img id="cgimg" alt="">
+  </div>
+  <div id="vignette" class="layer"></div>
+  <div id="fx" class="layer"></div>
+  <canvas id="particles" class="layer"></canvas>
+  <div id="flash" class="layer"></div>
+  <div id="paper"></div>
+  <div id="fade" class="layer"></div>
+  <div id="window"><div id="name"></div><div id="text"></div><div id="waiticon"></div></div>
+  <div id="sysmenu">
+    <button data-act="log">ログ</button>
+    <button data-act="auto">オート</button>
+    <button data-act="skip">スキップ</button>
+    <button data-act="save">セーブ</button>
+    <button data-act="load">ロード</button>
+    <button data-act="config">設定</button>
+    <button data-act="title">タイトル</button>
+  </div>
+  <div id="center" class="layer"></div>
+  <div id="chapter" class="layer"></div>
+  <div id="ending" class="layer"></div>
+  <div id="title" class="layer">
+    <img class="logo" src="assets/images/ui/title_logo.png" alt="灯守のことづて">
+    <div class="tmenu">
+      <button data-t="start">はじめから</button>
+      <button data-t="load">つづきから</button>
+      <button data-t="chapter">話をえらぶ</button>
+      <button data-t="config">設定</button>
+    </div>
+  </div>
+  <div id="modal" class="layer"></div>
+  <div id="boot" class="layer">
+    <div class="bt">灯守のことづて</div>
+    <div class="bp"><i></i></div>
+    <div class="bs">ゲームを読み込んでいます…</div>
+  </div>
+</div>
+</div>
+<script>
+const SCENARIO = {"ep1":"// ===== 第一話 あかりの消える音（陽ノ森ひより視点・一人称） =====\n@chapter 第一話|あかりの消える音\n@bg harbor_night cut\n@amb amb_waves_night\n@fade clear 1800\n夜の潮見港は、墨をこぼしたみたいに真っ黒だった。\n防波堤の先、赤い灯台のふもと。その墨が、ぬるりとうごめいている。\n@ori ink_small rise\n@se se_ink_bubble\n澱「……どうして……どうして……」\n@bgm bgm_night_patrol\n@show hiyori magic_smile R\nひより「はいはい、どうしてだろうねえ」\n灯台の手すりの上で片足立ちしながら、私はあくびをかみ殺した。\n白と橙の衣装。手には、蝋燭の炎をそのまま引き延ばしたみたいな、光の弓。\n陽ノ森ひより、十四歳。この港町、潮見の「灯守（ひもり）」をやっている。\n@show chitose magic_annoyed L\nちとせ「ひより、真面目にやれ」\n下から飛んでくる低い声。黒い番傘を肩にかついだ、鴉丸ちとせちゃん。\n人形みたいに整った顔なのに、表情はいつも、機嫌の悪い猫みたい。\nひより「真面目だよ。真面目にあくびしてる」\nちとせ「それは真面目とは言わない」\n@show hiyori magic_grin\nひより「ちとせちゃん、今日の数学の小テストどうだった？」\n@show chitose magic_angry\nちとせ「今その話をするな」\n@se se_ink_lunge\n@fx ink\n@fx shake\n@se se_metal_crush\n@hide hiyori fast\n闇が、跳ねた。\n黒い腕みたいなものが、私の立っていた手すりをひしゃげさせる。\n@se se_jump\n@show hiyori magic_battle R hop\nでも、もうそこに私はいない。くるっと宙返りして、灯台の屋根へ。\nひより「よっ、と」\n@se se_arrow_draw\n弦はない。指先で空をつまむと、そこに光の矢が生まれる。\nひより「ちとせちゃん、三秒！」\n@show chitose magic_battle\nちとせ「わかってる」\n@se se_umbrella_open\n@fx umbrella\n@se se_impact_heavy\n@fx shake\nちとせちゃんが番傘を開く。叩きつけられた闇が、火花みたいに散った。\n一歩も退かない。だから私は、安心して狙える。\nひより「一」\n+ひより「二」\n+ひより「三」\n@se se_arrow_shot\n@fx arrow\n@fx flash orange\n@wait 350\n@se se_purify\n@ori off purify\n@bgm stop 1800\n澱「……どうして……言って、くれなかった、の……」\n最後の声は、怒りよりも、泣き声に近かった。\n@particles gold on\n光がほどけて、粉雪みたいに海へ散っていく。\nあとには、潮の匂いと、波の音だけ。\n@se se_bon\n@show bonbori happy C hop\nぼんぼり「おつかれさまでございます！」\nぽん、と間の抜けた音。宙にふわふわ浮かぶ、手のひらサイズの紙の提灯。\n点の目に、への字の口。私たち灯守のお手伝い係、ぼんぼりだ。\n@bgm bgm_comedy\nぼんぼり「本日の澱、浄化完了でございます。お二人とも、たいへん見事なお手並み。ぼんぼり、感激いたしました」\n@show hiyori magic_smile\nひより「ぼんぼり、いつも終わってから出てくるよね」\nぼんぼり「戦闘中に出てまいりますと、燃えてしまいますので」\nひより「紙だもんね」\n@show bonbori proud\nぼんぼり「紙でございます」\n@particles gold off\n@bgm stop 2000\n@show chitose magic_normal\nちとせ「……今の、誰のだったんだろうな」\n澱は、人が飲み込んだ言葉から生まれる。\n言いたくて、言えなくて、喉の奥に沈めたまま腐ってしまった言葉。\nそれが夜になると形を持って、人を襲う。それを祓うのが、灯守の仕事。\n@show hiyori magic_gentle\nひより「誰のかはわからないけどさ。言えるといいね、その人。今度は」\n@show chitose magic_softsmile\nちとせちゃんは、何も言わなかった。\nでも口の端がちょっとだけ緩んだのを、私は見逃さなかった。\n@fade black 1200\n@hideall\n@particles off\n@amb stop 1000\n\n// ----- 教室 -----\n@bg classroom_morning cut\n@amb amb_classroom\n@fade clear 900\n@se se_school_bell\n@bgm bgm_school\n翌朝。二年三組に、転校生がやってきた。\n@show mio uniform_cold C\n澪「汐見澪です。よろしくお願いします」\nそれだけ言って、ぺこりと頭を下げる。\n長い黒髪に、白い肌。教室じゅうの視線を浴びても、水の底にいるみたいに静かな子。\nで。担任が指さした空席は――私の隣だった。\n@show mio uniform_cold R\n@se se_chair\n@show hiyori uniform_smile L hop\nひより「よろしくね！　私、陽ノ森ひより。ひよりでいいよ！」\n@show hiyori uniform_grin\nひより「どこから来たの？　部活入る？　好きな食べ物は？　あ、たい焼き好き？　駅前においしいとこあってね――」\n@show mio uniform_flat\n澪「……陽ノ森さん」\nひより「うん！」\n澪「ホームルーム、まだ終わってないです」\n@se se_cough\n担任「ごほん」\n@se se_class_laugh\n@show hiyori uniform_embarrassed\n教室に、くすくす笑いが広がる。\nひより「す、すみません……」\nそれでも懲りずに、教科書の陰から、小さく手を振ってみる。\n@show mio uniform_cold\n汐見さんは――振り返してくれなかった。\n@fade black 700\n@hideall\n@amb stop 600\n\n// ----- 踊り場 -----\n@bg stairs_noon cut\n@fade clear 700\n@bgm bgm_comedy\n昼休み。屋上へ続く階段の踊り場が、私とちとせちゃんの定位置だ。\n@show chitose uniform_eating L\n@show hiyori uniform_pout R\nちとせ「で、無視されたと」\nひより「無視じゃないよ。クールなんだよ」\nちとせ「お前の質問攻めに耐えられる人間は少ない」\nひより「ちとせちゃんは耐えたじゃん」\n@show chitose uniform_normal\nちとせ「耐えてない。慣れただけだ」\n@se se_bite\nメロンパンを四口で消していくちとせちゃん。ちなみに、今日も三つある。\n@show hiyori uniform_normal\nひより「そんなに食べて、なんで太らないの？」\nちとせ「灯守は燃費が悪い」\nひより「私も灯守なんだけど」\n@show chitose uniform_smirk\nちとせ「お前は胸に回らない分、口に回ってる」\n@show hiyori uniform_shock hop\n@fx shake\nひより「ひどくない！？」\n@bgm stop cut\n@se se_whoosh_dark\n@fx shadowpass\n@show chitose uniform_serious\n@show hiyori uniform_serious\n――窓の外を、何かが横切った。\n黒い、尾を引くような影。鳥じゃない。\n昼間に澱が出るなんて、めったにないのに。\nひより「……今の」\nちとせ「港の方に行った」\n@se se_bag_crush\nちとせちゃんが、メロンパンの袋をぐしゃりと握りつぶした。\n@fade black 900\n@hideall\n\n// ----- 旧桟橋 -----\n@bg old_pier_evening cut\n@amb amb_waves_evening\n@fade clear 1200\n@bgm bgm_sea_quiet\n放課後。気づいたら、私は汐見さんを探していた。\n理由は、自分でもうまく言えない。\nただ、帰り際に見た横顔が――昨日の澱の声と、同じ形をしている気がしたから。\n何かを飲み込んで、そのまま固まっちゃったみたいな顔。\n@se se_wood_creak\nもう使われていない、木の旧桟橋。立入禁止の札が、潮風に揺れている。\nその一番先に、制服の女の子がひとり、足をぶらぶらさせて海を見ていた。\nひより「汐見さーん」\n@show mio uniform_surprised C hop\n澪「……陽ノ森さん。なんで」\n@show mio uniform_flat R\n@show hiyori uniform_normal L\nひより「探してた。ここ危ないよ、板腐ってるし」\n澪「知ってます」\nひより「知ってて来たの？」\n@show mio uniform_sad\n汐見さんは答えなかった。しばらく黙って、それから、海に向かってぽつりと言った。\n澪「前の町にも、海があったんです。父がいた家の近くに」\n澪「……両親、離婚して。私は、母についてきたんですけど」\n澪「ちゃんと、さよならって言えなかったから」\n@se se_wood_creak\n私は何も言わずに、隣に座った。\n澪「言えばよかったって、ずっと思ってて。でも言ったら、本当に終わっちゃう気がして」\n@show mio uniform_bitter\n澪「……変ですよね。初対面の人に、何話してるんだろう」\n@show hiyori uniform_gentle\nひより「変じゃないよ」\n汐見さんと同じリズムで、足をぶらぶらさせる。\nひより「言えなかったこと、あるよね。みんな、たぶん」\n@bgm stop cut\n@se se_rumble\n@fx shake\n……そのときだった。\n@ori pier_giant rise\n@fx shakebig\n@bgm bgm_crisis\n海が――盛り上がった。\n水じゃない。墨だ。昨日のとは比べものにならない大きさの闇が、海から立ち上がっていく。\n@se se_voices_whisper\n@show mio uniform_terrified\n澱「いかないで」「ごめんなさい」「すきだった」「たすけて」\n澱「さよなら」「さよなら」「さよなら」\n@show hiyori uniform_serious\nひより「汐見さん、走って！」\n@se se_transform\n@fx transform_orange\n@fx flash orange 700\n@show hiyori magic_battle L\nひより「灯せ！」\n胸元の真鍮の提灯を握る。橙の光がはじけて、制服が灯守の衣装に編み変わる。\n@show mio uniform_shock\n澪「え……」\nひより「いいから走って！　陸まで！」\n@se se_ink_lunge\n@fx ink\n@se se_wood_break\n@fx shakebig\n汐見さんを突き飛ばして、私は逆に跳ぶ。さっきまでいた板が、粉々に砕け散った。\n@se se_arrow_shot\n@fx arrow\n一本。\n@se se_arrow_shot\n@fx arrow\n+二本。\n@se se_arrow_shot\n@fx arrow\n+三本。\n光の矢が、墨の中で溺れるみたいに消えていく。\n@show hiyori magic_shock\nひより「うそでしょ、硬っ……！」\n@se se_impact_heavy\n@fx flash red 600\n@fx shakebig\n@show hiyori magic_hurt\n次の一撃は、かわしきれなかった。\n背中から支柱に叩きつけられる。息が止まる。視界が、白く点滅する。\n澪「陽ノ森さん！」\n……逃げてない。桟橋の根元で、こっちに手を伸ばしたまま固まってる。\n@se se_voices_whisper\n闇の無数の口が、一斉に、汐見さんの方を向いた。\n澱「さよなら」「さよなら」「さよなら」\nああ、そうか。\nこの澱は、あの子を呼んでるんだ。言えなかった「さよなら」を、ずっと抱えてた子を。\n似た言葉は、引き合うのかもしれない。\n@show hiyori magic_battle\n歯を食いしばって、立ち上がる。脇腹が焼けるみたいに痛い。でも、足は動く。\nひより「汐見さん、なんで逃げないの」\n@show mio uniform_cry\n澪「だって……なんで助けるんですか。知らない人なのに」\n@bgm stop 800\n私は、笑った。痛くて、ちょっと涙目だったけど。\n@show hiyori magic_painsmile\nひより「知らない人じゃないよ。隣の席じゃん」\n@se se_ink_lunge\n闇の腕が、汐見さんめがけて振り下ろされる。\n――間に合わない！\n@se se_umbrella_open\n@fx umbrella\n@se se_impact_heavy\n@fx shakebig\n@show chitose magic_battle C\n@bgm bgm_battle_hiyori\nちとせ「遅れた」\n黒い番傘が一本、巨大な腕を受け止めていた。\n@show hiyori magic_smile\nひより「ちとせちゃん！」\nちとせ「メロンパンの恨みだ。三十秒なら持たせる。それ以上は知らん」\nひより「十秒でいい！」\n普通の矢じゃ届かない。だったら、もっと大きな灯を。\n目を閉じる。胸の真ん中、提灯の奥に灯る火に、意識を沈めていく。\n@se se_charge\n@particles embers on\n@show hiyori magic_charge\n指先に、橙の光が集まってくる。熱い。掌が焦げそうなくらい。\n@fx flash orange\nひより「灯火（ともしび）――」\n@cg okuribi\n@se se_beam\n@fx flash white 900\nひより「――送り火！！」\n@fx beam\n@fx shakebig\n@wait 700\n夕焼けをそのまま一本に束ねたみたいな、光の奔流。\nちとせちゃんがぴったりのタイミングで傘を閉じて跳び、その隙間を光が貫いた。\n@cg off\n@particles embers off\n@se se_purify\n@ori off purify\n@bgm stop 2500\n闇の内側から、ゆっくりと、灯がともる。\n無数の口が、ひとつずつ閉じていく。\n澱「……さよなら。……げんきでね」\n@particles gold on\n@show mio uniform_tear R\n金色の粉が、夕暮れの海に降りそそぐ。\n汐見さんはその光を見上げていた。頬を、ひとすじ、涙が伝っていた。\n@wait 500\n@se se_bon\n@show bonbori happy RR hop\nぼんぼり「おつかれさまでございます！」\n@show mio uniform_surprised\n澪「……え、なに、ちょうちん？　しゃべった？」\nぼんぼり「はじめまして、汐見澪さま。灯守の皆さまのお手伝いをしております、ぼんぼりと申します」\n@show hiyori magic_grin\nひより「お手伝いっていうか、終わってから出てきて褒めるだけの係だよ」\n@show bonbori pout\nぼんぼり「陽ノ森さま、それは心外でございます。わたくし、褒めるのがたいへん上手なのです」\n@show chitose magic_normal\nちとせ「それは知ってる」\n@show mio uniform_dumbfounded\nぽかんと口を開けた汐見さん。\n……たぶん、それが、私の見たこの子の、初めての素の顔だった。\n@fade black 1200\n@hideall\n@particles off\n@amb stop 800\n\n// ----- かもめ屋 -----\n@bg kamomeya_sunset cut\n@amb amb_shopping_street\n@fade clear 1200\n@bgm bgm_sunset_bench\n三十分後。駅前のたい焼き屋「かもめ屋」。\n店先のベンチに、三人とひとつが並んでいた。\n@show chitose uniform_eating L\n@show hiyori uniform_smile C\n@show mio uniform_normal R\n@show bonbori normal RR\n変身を解けば、灯守の傷はほとんど消える。残ったのは、脇腹の絆創膏くらい。\nひより「ちとせちゃん、それ何個目？」\nちとせ「六」\nひより「おごりって言ったけど、限度ってあるよね」\nちとせ「命の恩人だぞ」\n@show hiyori uniform_pout\nひより「それはそうなんだけど」\n@se se_bite\n頭から食べるか、尻尾から食べるか。私とちとせちゃんは、出会って以来ずっと揉めている。\n@show hiyori uniform_smile\nひより「汐見さんは？　頭から？　尻尾から？」\n@show mio uniform_shy\n澪「え……あの、お腹から、です」\n@show hiyori uniform_shock hop\n@fx shake\nひより「お腹！？」\n@show chitose uniform_deadpan\nちとせ「第三勢力だ」\n@show hiyori uniform_laugh\n真顔で言うちとせちゃんに、思わず噴き出す。\n@show mio uniform_normal\n澪「あの、ぼんぼりさんは、食べないんですか」\nぼんぼり「お気遣いありがとうございます、汐見さま。わたくしも一度、挑戦したことがあるのです」\nひより「どうなったの」\n@show bonbori sad\nぼんぼり「餡子が和紙に染みまして。三日ほど、顔の右半分が茶色でございました」\n@se se_laugh_small\n@show mio uniform_laughing hop\n澪「ふ……っ、ふふっ」\n汐見さんが、口元を押さえて噴き出した。肩の震えが、止まらない。\n@show hiyori uniform_excited hop\nひより「わ、笑った！　ちとせちゃん、汐見さん笑った！」\n@show chitose uniform_eating\nちとせ「見てた」\n澪「ご、ごめんなさい、だって、茶色って……」\n@show bonbori happy\nぼんぼり「よいのです、よいのです。笑っていただけるなら、ぼんぼりの右半分も報われます」\n@show mio uniform_shy\nひとしきり笑ったあと、汐見さんは、膝の上のたい焼きを見つめた。\n澪「陽ノ森さん。今日は、ありがとうございました」\n澪「それと……桟橋で、いろいろ話しちゃって、ごめんなさい」\n@show hiyori uniform_smile\nひより「いいって。私も聞きたかったし」\n澪「あの、それで」\n@se se_paper_rustle\n紙袋をぎゅっと握る、細い指。\n@show mio uniform_blush\n澪「……また、こうやって、会ってもらえますか」\n@show hiyori uniform_puzzled\nひより「なに言ってんの。明日も隣の席じゃん」\n澪「そ、そういう意味じゃなくて、その」\n@show hiyori uniform_brightsmile\nひより「わかってるって」\nたい焼きの最後のひとかけらを口に放り込んで、汐見さんの肩をぽんと叩く。\n夕陽が、まぶしい。\nひより「もう友達じゃん。これからもよろしくね、澪ちゃん！」\n@show mio uniform_blushbig hop\n澪「は、はい……！」\n@show chitose uniform_eating\nちとせ「八個目いいか」\n@show bonbori pout\nぼんぼり「鴉丸さま、さすがに」\n@bgm stop cut\n@amb stop cut\n@hide hiyori cut\n@se se_collapse\n@window off\n@wait 1400\n@cg paperbag cut\n@se se_paper_roll\n@wait 2600\nその真ん中で、陽ノ森ひよりは、前のめりに倒れた。\nベンチから、アスファルトへ。受け身も取らずに。\nたい焼きの紙袋が、ころころと転がっていった。\n@cg off cut\n@show chitose uniform_blank L\n@show mio uniform_blank R\n@show bonbori normal RR\nちとせ「……ひより？」\n返事は、なかった。\n@window off\n@wait 600\n@fade black 3000\n@hideall\n@cg off cut\n@wait 1500\n@center 陽ノ森ひよりは、それきり、二度と動かなかった。\n@centeroff\n@wait 1800\n@flag ep1\n","ep2":"// ===== 第二話 聞かれなかったので（汐見澪視点・一人称） =====\n@chapter 第二話|聞かれなかったので\n@bg hospital_corridor_night cut\n@amb amb_hospital\n@fade clear 2000\n急性心不全、とお医者さんは言った。\n原因はわからない、とも。\n心臓に病気の痕跡はない。外傷もない。脇腹の擦り傷は、転んだときのものでしょう。\n健康な十四歳の女の子の心臓が、ある瞬間、ただ止まった。\n……まれに、そういうことはあるのです、と。\n@bgm bgm_grief\n蛍光灯の音だけが、やけにうるさい。\n廊下の向こうで、陽ノ森さんのお母さんが、白衣にすがって何か言っている。言葉になっていない声だった。\nそのスカートの裾を、小学生くらいの男の子がつかんでいた。泣いていない。まだ、何もわかっていない顔。\n@show chitose uniform_blank C\n鴉丸さんは、長椅子の端に座っていた。\n背筋を伸ばして、膝の上に手を揃えて。かもめ屋のベンチから、姿勢がほとんど変わっていない。\n救急車の中でも、陽ノ森さんの手を握ったまま、ひとことも喋らなかった。\n私は――その隣に、座れなかった。\n@tint memory\n@cg paperbag\n頭の中で、同じ場面が何度も再生される。\n夕陽。たい焼きの紙袋。また会ってもらえますかって言った、私の声。\nもう友達じゃん、って笑った顔。\n@se se_collapse\nそれから、倒れる音。\n@cg off\n@tint none\n……あの音は、思っていたより、ずっと軽かった。\n@fade black 1500\n@hideall\n@amb stop 1000\n\n// ----- 通夜 -----\n@bg funeral_hall_rain_night cut\n@particles rain on\n@amb amb_rain\n@fade clear 1500\n@bgm bgm_rain_mourning\nお通夜は、三日後の、雨の夜だった。\n二年三組のみんなが、制服で並んでいる。泣いている子が多かった。\n陽ノ森さんは誰とでも話す子だったから、みんな何かしらの思い出を持っていた。\n消しゴムを借りた。宿題を見せてもらった。廊下ですれ違うたびに、手を振られた。\n……私には、三日分の思い出しかない。\n@cg funeral_portrait slow\n遺影の陽ノ森さんは、写真の中でも笑っていた。\n少し首をかしげて、カメラの向こうの誰かに、何か話しかけようとしている顔。\n何を祈ればいいのかわからないまま、私は、頭を下げた。\n@cg off slow\n@bg parking_rain_night fade\n鴉丸さんは、斎場の中にいなかった。\n外に出ると、駐車場の隅。街灯の下に、傘も差さずに立っている人影があった。\n@show chitose uniform_wet_back C slow\n澪「……鴉丸さん。入らないんですか」\nちとせ「入ったら、あいつが死んだことになる」\n雨音に消されそうな声。\nちとせ「半年だ」\nちとせ「あいつが灯守になってから半年。一緒に、四十二体、澱を祓った」\nちとせ「腕が折れたこともある。死にかけたことも何度もある。それでも、一度も倒れなかった」\nちとせ「毎回、終わったら……腹減ったって、笑ってた」\n@show chitose uniform_wet_glare\nちとせ「お前と会った日に、死んだ」\n鴉丸さんが、ようやく振り向いた。濡れた前髪の向こうで、真っ赤な目がこっちを見ていた。\n怒りたいのに、怒る先がない人の顔だった。\nちとせ「お前のせいだと言いたい。言えたら楽だと思う」\nちとせ「でも、違うのはわかってる。お前は何もしてない。たい焼き食って、笑ってただけだ」\n@show chitose uniform_wet_cry\nちとせ「……わからないんだ。何が起きたのか、全然」\n@fade black 1500\n@hideall\n@particles off\n@amb stop 1200\n@bgm stop 1200\n\n// ----- 澪の部屋 -----\n@bg mio_room_night cut\n@fade clear 1000\nその夜。\n@se se_bon\n@show bonbori normal C hop\nぼんぼり「こんばんは、汐見さま。このたびは、ご愁傷さまでございました」\n点の目。への字の口。かもめ屋で見たときと、何ひとつ変わらない顔で。\n澪「……陽ノ森さんは、なんで死んだんですか」\nぼんぼり「はい。陽ノ森さまは、契約を満了なさいました」\n澪「満了……？」\n@bgm bgm_bonbori\nぼんぼり「ご説明いたしましょう」\nぼんぼり「灯守になるには、わたくしに言葉をひとつ、お預けいただきます」\nぼんぼり「その方が、いちばん言いたい言葉を、ひとつだけ」\nぼんぼり「わたくしはそれを灯の芯にして燃やし、皆さまのお力に変えております」\n@show bonbori proud\nぼんぼり「いちばん言いたい言葉は、いちばんよく燃えるのです」\n背中を、冷たいものが伝った。\n@show bonbori normal\nぼんぼり「お預かりした言葉が何だったのか、ご本人は忘れてしまわれます。そういう決まりでございます」\nぼんぼり「そして、もしご本人がその言葉を声に出された場合――」\nぼんぼり「言葉は、ご本人のもとへお返しすることになります。芯を失った灯は、消えます」\n澪「……灯が、消えたら」\n@bgm stop cut\n@wait 700\nぼんぼり「器も、消えます」\n少しも、声の調子を変えずに。\nぼんぼり「陽ノ森さまのお預けになった言葉は――『ともだち』でございました」\n@se se_heartbeat\n@tint memory\nひより「もう友達じゃん。これからもよろしくね、澪ちゃん！」\n@tint none\n私が、聞いたから。\nまた会ってもらえますかって。私が、聞いたから。\n澪「……そんなの、陽ノ森さんは知ってたんですか。言ったら死ぬって」\nぼんぼり「いいえ」\n澪「なんで教えなかったんですか！」\n@show bonbori tilt\nぼんぼりは、ほんの少しだけ首をかしげた。点の目が、きょとんとして見えた。\n@wait 900\nぼんぼり「聞かれなかったので」\n@se se_throw_clock\n@fx shake\n目覚まし時計を投げつけた。ぼんぼりの体をすり抜けて、壁にぶつかる。\n@se se_battery_roll\n電池が、ころころと転がる音。\n@show bonbori normal\nぼんぼり「汐見さまが気に病まれることではございません」\nぼんぼり「言葉というものは、いつか口からこぼれるものです。陽ノ森さまの場合は、半年でございました。決して、短い方ではございません」\n澪「出てって」\n@show bonbori happy\nぼんぼり「ところで汐見さま。あなたには、たいへん良い素質がございます」\nぼんぼり「いま潮見の灯守は、鴉丸さまお一人。もしよろしければ――」\n@fx shake\n澪「出てって！！」\n@se se_bon\n@hide bonbori cut\n……机の上には、もう何もなかった。\n@bgm bgm_grief_piano\n膝に顔をうずめて、声を殺して泣いた。\n泣きながら、ずっと同じことを考えていた。\n鴉丸さんは、このことを、知らない。\n@fade black 1200\n\n// ----- ちとせのアパート -----\n@bg chitose_apartment_day cut\n@bgm stop 1500\n鴉丸さんの住所は、陽ノ森さんのお母さんが教えてくれた。港の裏手の、古い二階建てのアパート。\n@fade clear 1000\n@se se_doorbell\n外階段の手すりは錆びていて、赤茶けた粉が手のひらについた。\n@se se_doorbell\n@wait 900\n@se se_doorbell\n@wait 1200\n@se se_door_open\n@show chitose uniform_wrinkled C\n三回目のチャイムで、ようやくドアが開いた。\n皺だらけの制服。家具のほとんどない部屋。冷蔵庫のモーター音だけが響いている。\n澪「……ご家族は」\nちとせ「いない。ばあちゃんがいたけど、去年死んだ」\n澪「ご飯、食べてますか」\nちとせ「食べてない」\nあれだけ食べていた子が。\n@se se_plastic_bag\nコンビニのメロンパンを、畳の上に置く。鴉丸さんはそれを見たけれど、手を伸ばさなかった。\n澪「話があって、来ました」\n@bgm bgm_truth\n全部、話した。言葉を預けること。いちばん言いたい言葉であること。忘れてしまうこと。口にしたら、死ぬこと。\n……陽ノ森さんの言葉が、何だったか。\n@show chitose uniform_stare\nちとせ「……ともだち」\nちとせ「あいつ、私のこと、一度も友達って言わなかった」\n澪「え……」\nちとせ「半年ずっと一緒にいて。毎日昼飯食って、毎晩澱を祓って」\nちとせ「誰にでも友達友達って言うやつなのに、私にだけは一回も言わなかった。相棒とか、ちとせちゃんとか、そういうのばっかで」\n@show chitose uniform_sad\nちとせ「照れてるんだと思ってた。こっちから言うのも癪だから、言わなかった」\nちとせ「……言ってやれば、よかっ――」\n@bgm stop cut\n@show chitose uniform_frozen\n鴉丸さんが、急に口をつぐんだ。\n私にもわかった。話しながら、私も同じことに気づいていたから。\n鴉丸さんも、灯守だ。\n鴉丸さんも、言葉をひとつ預けている。それが何なのか――鴉丸さん自身にも、わからない。\n@se se_heartbeat\n@show chitose uniform_mouthcover\n鴉丸さんは、ゆっくりと、自分の口を手で覆った。\nありがとう、かもしれない。ごめん、かもしれない。おはよう、かもしれない。\nいま喋ろうとした次の言葉が、最後の言葉になるかもしれない。\n澪「……鴉丸さん」\n返事は、なかった。口を押さえたまま、鴉丸さんは首を横に振った。\n喋らない、という意味だった。\n@fade black 1500\n@hideall\n\n// ----- 夜、港 -----\n@bg mio_room_window_night cut\n@amb amb_waves_night\n@fade clear 1000\nその夜、港に澱が出た。\n窓の向こう、防波堤の先に、黒い柱が立ち上がっている。\n@se se_distant_clash\nそのまわりで、ときどき、赤い火花が散っていた。\n黒い番傘の、赤い帯の色。\n……鴉丸さんが、ひとりで戦ってる。\n@se se_run_footsteps\n@bgm bgm_run\n@fade black 400\n@bg harbor_night cut\n@fade clear 400\n気づいたら、外に飛び出していた。上着も着ずに、サンダルのまま。\n坂を下りて、商店街を抜けて、港へ。喉の奥が、血の味がした。\n@ori pillar rise\n@fx shake\n@show chitose magic_hurt C\n防波堤の付け根で、足が止まった。\n鴉丸さんは、もうぼろぼろだった。番傘は半分折れて、着物の袖は裂けている。\nそれでも、闇に飛び込んでいく。掛け声も、合図もない。\n「三秒！」って叫んでくれた声は、もうない。鴉丸さん自身も、ひとことも声を出さない。\n……まるで、死に場所を探してるみたいだった。\n@se se_voices_whisper\n澱「ひとりにしないで」「ひとりにしないで」「ひとりにしないで」\n@show chitose magic_shock\n鴉丸さんの動きが、一瞬、止まった。\n@se se_impact_heavy\n@fx flash red 600\n@fx shakebig\n@hide chitose fast\nその一瞬に、黒い腕が、鴉丸さんを叩き落とした。\n@se se_umbrella_drop\n番傘が、手から離れて転がる。\n澪「鴉丸さん！」\n叫んで、そして――私にできることは、何もなかった。\n@bgm stop cut\n@se se_bon\n@show bonbori normal R hop\nぼんぼり「こんばんは、汐見さま」\n耳元で、あの間の抜けた音。\nぼんぼり「鴉丸さまは、あと二十秒ほどで、器を失われるかと存じます」\n@se se_heartbeat\nぼんぼり「契約、なさいますか」\nこの提灯は、悪魔なのかもしれない。ただの仕組みなのかもしれない。\nどっちでも同じだ。頷けば、私もいつか、何かのはずみで死ぬ。陽ノ森さんみたいに、何の前触れもなく。\nでも、頷かなければ――鴉丸さんは、二十秒後に死ぬ。\n@tint memory\nひより「知らない人じゃないよ。隣の席じゃん」\n@tint none\n@bgm bgm_contract\n澪「……します」\nぼんぼり「かしこまりました」\n@show bonbori glow\nぼんぼり「それでは、汐見澪さま。あなたがいちばん言いたい言葉を、ひとつ、お預かりいたします」\n@se se_word_taken\n@fx flash white 900\n喉の奥から、何かが抜けていった。\n痛くはない。ただ、舌の上にあったはずのものが、すうっと消えた。\n大事なものだったことだけは、わかる。言いたかった。ずっと、言いたかった。\n……それが何だったのか、もう思い出せない。\n@se se_transform\n@fx transform_blue\n@cg mio_transform\n胸の真ん中に、灯がともる。夜明け前の海の色をした、青白い光。\n紺と白の衣装。そして右手に――一本の筆。\n@cg off\n@hide bonbori fast\n@show mio magic_determined C\n私はそれを握りしめて、走り出した。\n@fade black 1800\n@hideall\n@ori off cut\n@amb stop 1500\n@bgm stop 1500\n@flag ep2\n","ep3":"// ===== 第三話 筆談 =====\n@chapter 第三話|筆談\n@bg harbor_night cut\n@ori pillar\n@amb amb_waves_night\n@show chitose magic_hurt L\n@show mio magic_battle R\n@fade clear 900\n@bgm bgm_battle_mio\n筆の使い方なんて、誰にも教わってない。\nそれでも、右手は知っていた。\n@se se_brush\n走りながら、空中に一画を引く。青白い光の墨が、夜気の中に線を残す。\n二画、三画。指が勝手に動いて、ひとつの字を書き上げる。\n@fx kanji tome\n@se se_kanji_activate\n――「止」。\n@fx shake\n鴉丸さんに振り下ろされていた黒い腕が、空中でぴたりと止まった。\n@se se_voices_whisper\n澱「ひとりにしないで」「ひとりにしないで」\n澪「鴉丸さん、立って！」\n@show chitose magic_shock\n鴉丸さんが、驚いた顔でこっちを見た。紺と白の衣装。手には筆。\nそれが誰なのかわかった瞬間、その顔が、くしゃりと歪んだ。\n何か言おうとして口を開いて――ぎゅっと、唇を噛んで閉じた。\n@se se_crack\n@fx crack\n「止」の字に、ぴしりとひびが入る。長くはもたない。\n@se se_brush\n@fx kanji akari\n@se se_kanji_activate\n――「灯」。\n字が、鴉丸さんの番傘に吸い込まれる。折れた骨がつながって、傘全体がうっすらと光った。\n@show chitose magic_battle\n鴉丸さんは一度だけこっちを振り返って、小さく頷いた。\n@se se_umbrella_open\n@se se_jump\n@hide chitose fast\nそして、跳んだ。\n@se se_glass_break\n@fx impact\n@fx flash white\n@fx shakebig\n@se se_purify\n@ori off purify\n@bgm stop 2200\n光が内側からあふれて、闇がほどけていく。\n最後に、か細い、おばあさんのような声がした。\n澱「……ひとりにして、ごめんねえ」\n@particles gold on\n@show chitose magic_shock L\n鴉丸さんの肩が、びくりと震えた。\n@fade black 1200\n@hideall\n@particles off\n\n// ----- 防波堤の先 -----\n@bg breakwater_tip_night cut\n@fade clear 1000\n@bgm bgm_night_calm\n防波堤の先に、ふたりで座った。\n@show chitose uniform_tired L\n@show mio uniform_tired R\n変身を解くと、鴉丸さんの傷はほとんど消えていた。私のサンダルは、片方なくなっていた。\n@se se_bon\n@show bonbori happy C hop\nぼんぼり「おつかれさまでございます。汐見さま、初陣とは思えぬお見事な筆さばきでございました。ぼんぼり、感激いたしました」\n私も、鴉丸さんも、ぼんぼりを見なかった。\n澪「……ひとつ、聞いていいですか」\nぼんぼり「なんなりと」\n澪「書くのは、大丈夫なんですか。預けた言葉を、字で書いたら」\n@show bonbori normal\nぼんぼり「はい。お預かりしているのは、声でございますので。書かれた言葉は、お預かりの対象外でございます」\n@show chitose uniform_look\n鴉丸さんが、ゆっくりとこっちを向いた。\n澪「もうひとつ。燃やした言葉は、どこに行くんですか」\n@show bonbori tilt\nぼんぼりは、少し考えるように、宙でくるりと一回転した。\nぼんぼり「燃えた言葉は、煤になります」\n澪「その煤は」\nぼんぼり「さあ。海へ流れるのではないかと存じます」\n@show bonbori normal\nぼんぼり「わたくしは、灯ですので。灯は、照らすことしか存じません」\n@se se_bon\n@hide bonbori cut\n@bgm bgm_notebook\nいつも英単語用に持ち歩いているメモ帳とボールペンを取り出して、白紙のページを鴉丸さんに差し出した。\n鴉丸さんは、それを長いこと見つめて――ペンを、受け取った。\n@paper note\n>ちとせ:はら へった\n@show mio uniform_crylaugh\n澪「……っ、ふ……ふふ……」\n泣き笑いみたいな声が、勝手に漏れた。\n@paper off\n@fade black 1200\n@hideall\n\n// ----- 筆談の日々 -----\n@bg stairs_noon cut\n@fade clear 900\nそれから、私たちの筆談が始まった。\n文房具屋で、いちばん丈夫そうなリングノートを二冊。一冊は鴉丸さんに、一冊は私に。\n鴉丸さんは、学校で一言も喋らなくなった。\n当てられたら、黙って黒板に答えを書く。理由を聞かれたら、ノートに『のど』とだけ。\nクラスのみんなは、陽ノ森さんのことがショックだったんだね、と囁き合った。……それは、半分だけ正しかった。\n私も、なるべく喋らないことにした。自分が何を預けたのか、わからないから。\nお母さんには、声が出にくいって嘘をついた。\n転校してすぐ、友達を亡くした娘に、お母さんはそれ以上何も聞かなかった。\n昼休みは、屋上へ続く階段の踊り場。陽ノ森さんと鴉丸さんが、毎日お昼を食べていた場所。\n@show chitose uniform_eating L\n@show mio uniform_normal R\n@se se_bite\n鴉丸さんは、また食べるようになった。メロンパンを三つ、黙々と。\n@paper note\n>澪:今日の数学、わかった？\n>ちとせ:わからん\n>澪:教えようか\n>ちとせ:いらん\n>澪:小テスト、来週だよ\n@wait 700\n>ちとせ:……たのむ\n@show mio uniform_smallsmile\n鴉丸さんの字は、本当にひどい。「た」と「な」の区別がつかない。「む」は、ほとんど丸。\n>澪:字、もうちょっと丁寧に\n>ちとせ:うるさい\n@se se_pen_soft\nページの端に、なぜか、猫の絵。……字より、はるかに上手かった。\n>澪:絵、上手いね\n>ちとせ:ばあちゃんに習った\n@paper clear\n声で話すときの鴉丸さんは、いつも短くて、ぶっきらぼう。\nでも、ノートの上の鴉丸さんは、少しだけ違う。\n書くのが遅いぶん、考えてから書く。考えてから書くぶん、言葉が柔らかい。\n@bgm stop 2000\n>ちとせ:ばあちゃんは、漁師の嫁だった。じいちゃんは、私が生まれる前に海で死んだ\n>ちとせ:ばあちゃんは毎晩、灯台の方を見て、何か言いたそうにしてた。でも、何も言わなかった\n>澪:この前の澱、最後に「ひとりにしてごめんね」って言ってた\n>ちとせ:うん\n>澪:あれ、もしかして\n@wait 1400\n>ちとせ:わからん。わからんけど、ばあちゃんの声に似てた\n@show chitose uniform_window\nそれ以上、私も鴉丸さんも、何も書かなかった。\nふたりで、踊り場の窓から、灰色の海を見ていた。\n@paper off\n@fade black 1200\n@hideall\n\n// ----- 陽ノ森家 -----\n@bg hiyori_house_altar cut\n@fade clear 1000\n@bgm bgm_incense\n週末、陽ノ森さんの家を訪ねた。\n@show hmother sad C\nお線香をあげさせてほしいって、ノートに書いて見せるつもりだった。\nでも、玄関を開けたお母さんの顔を見たら――声が、出ていた。\n澪「……陽ノ森さんに、お線香を、あげさせてください」\n@se se_heartbeat\n……言ってから、心臓が跳ねた。\n生きてる。何も起きない。胸の奥で、そっと息を吐いた。\n@hide hmother\n@se se_rin\n仏壇の前に座る。ふすまの陰から、小学生の弟くんが、じっとこっちを見ていた。\n陽太、と呼ばれても、出てこなかった。\n@show hmother soft C\nひよりの母「これ、ひよりの机の引き出しにあったの。日記みたいなんだけど……ほとんど、鴉丸さんのことが書いてあって」\nひよりの母「鴉丸さん、お通夜にもお葬式にも、入ってこなかったでしょう。私が渡しても、受け取ってくれないかもしれないと思って」\nひよりの母「汐見さん、もしよかったら」\n@se se_paper_rustle\n表紙には、丸っこい字で『ひよりの にっき（見るな）』。\n@fade black 900\n@hideall\n\n// ----- 堤防・日記 -----\n@bg embankment_sunset cut\n@amb amb_waves_evening\n@fade clear 1000\n@bgm bgm_diary\n帰り道、堤防に座って、最初のページを開いた。\n読んじゃいけない。でも、鴉丸さんに渡す前に、渡していいものなのか、確かめないと。\n@paper diary\n@se se_page_turn\n>ひより:今日、ぼんぼりってちょうちんと契約して、灯守になった！\n>ひより:港で、となりのクラスの鴉丸さんがひとりで化け物と戦ってて、死にそうだったから。私も何かしたかった\n>ひより:弓が出た。かっこいい。なんで来たんだって怒られた。でも、ありがとうって小さい声で言われた。たぶん。聞きまちがいかも\n@se se_page_turn\n@paper clear\n>ひより:鴉丸さん、お昼いつもひとり。メロンパン三つ。今日、隣に座った。どっか行けって言われたけど、行かなかった\n>ひより:ちとせちゃんって呼んでみた。にらまれた。でも訂正されなかった。勝ち\n@paper off\nページをめくるたびに、鴉丸さんがいた。\n@paper diary\n@se se_page_turn\n>ひより:ちとせちゃんが笑った。ちとせちゃんが数学で赤点。ちとせちゃんが私をかばって腕を折った\n>ひより:ちとせちゃんのおばあちゃんが死んだ。お葬式で泣かなかった。夜、港でひとりで泣いてた。声、かけられなかった\n@se se_page_turn\n@paper clear\n@bgm stop 2500\n>ひより:ちとせちゃんと、友達になりたい。もうなってるのかもしれないけど、ちゃんと言いたい。言葉にしたい\n@wait 900\n@se se_page_turn\n@paper clear\n@se se_heartbeat\n>ひより:今日も言えなかった。なんでだろう。ほかの子には普通に言えるのに\n>ひより:ちとせちゃんの前だと、言おうとすると、喉のところで言葉が止まる。照れてるのかな。私が？　まさか\n@se se_page_turn\n@paper clear\n>ひより:また言えなかった。変なの。ほかの子に言うときも、最近ちょっと引っかかる気がする。風邪かな\n@paper off\n@bgm bgm_truth\nノートを持つ手が、震えた。\n陽ノ森さんは、気づいていなかった。でも――体は、知っていたんだ。\n預けた言葉の場所だけが白く霞んで、喉の奥で引っかかる。だから半年間、無意識に避け続けた。\n一番言いたい相手の前では、とくに。\nそれが、あの夕方。私の前で、こぼれた。\n鴉丸さんのことで頭がいっぱいだったところに、なんの関係もない転校生が現れて、また会ってもらえますかって聞いたから。\n警戒する理由なんて、何もない相手だったから。\nたい焼きと夕陽と笑い声で、心がすっかり、ほどけていたから。\n@bgm bgm_diary\n@paper diary\n@se se_page_turn\n>ひより:今日も澱を祓った。「どうして言ってくれなかったの」って声だった\n>ひより:言えるといいねって言ったら、ちとせちゃんがちょっと笑った\n@wait 600\n>ひより:明日こそ、ちとせちゃんに言う\n>ひより:あと、明日は転校生が来るらしい。仲良くなれたらいいな\n@wait 800\n@paper off\nそれが、最後のページだった。\n@show mio uniform_cry C slow\n夕方の海が、ぼやけて、何も見えなかった。\n@fade black 1500\n@hideall\n@amb stop 1200\n\n// ----- ちとせ、日記を読む -----\n@bg chitose_apartment_evening cut\n@bgm stop 1000\n@fade clear 1000\n鴉丸さんのアパートの畳に、日記を置いた。\n@show chitose uniform_normal C\n鴉丸さんは、表紙の『見るな』の字を、しばらく指でなぞっていた。\nそれから、何も書かず、何も言わず、最初のページを開いた。\n@se se_page_turn\nページをめくる音だけが、ゆっくりと続く。\n@wait 1400\n@se se_page_turn\nときどき、その音が、長く止まる。\n@wait 1800\n@se se_page_turn\n@bgm bgm_grief_piano\n最後のページを読み終えた鴉丸さんは、日記を胸に抱えて、長いあいだ動かなかった。\n@show chitose uniform_cry\nやがて、自分のノートを引き寄せて、ペンを走らせた。\n@paper note\n@se se_pen_hard\n>ちとせ:ばか\n@se se_pen_hard\n>ちとせ:ばか\n@se se_pen_hard\n>ちとせ:ばか　ばか　ばか　ばか　ばか\n@fx tears\n紙が破れそうな筆圧。ばかの上に、ぽたぽたと水滴が落ちて、インクがにじんでいく。\n@wait 900\nページの一番下に、小さな字。\n>ちとせ:わたしも\n@wait 1200\n@paper off\nそれだけだった。\n何も書かずに、鴉丸さんの隣に座る。肩が触れるくらいの距離に。\n鴉丸さんは、逃げなかった。\n@fade black 1800\n@hideall\n@bgm stop 1500\n\n// ----- 影 -----\n@bg harbor_night cut\n@amb amb_waves_night\n@show mio magic_battle R\n@show chitose magic_battle L\n@fade clear 900\n@bgm bgm_battle_mio\nその夜も、港に澱が出た。\nノートで決めた合図は、ふたつ。鴉丸さんが傘を二回回したら、突っ込む。私が筆を真上に掲げたら、下がる。\n@bgm stop cut\n@amb stop 2500\nでも、灯台のふもとで、私たちは同時に足を止めた。\n澱は――小さかった。\n人ひとり分くらいの、黒い影。滲む輪郭は、どこか、女の子の形をしていて。\n背中に、弓のようなものを背負っている気がした。\n@se se_ink_bubble\n@show shadow hiyori C slow\n影が、こっちを向いた。\n顔はない。それでも、首を少しかしげたのがわかった。\nカメラの向こうの誰かに、何か話しかけようとするみたいに。\n@wait 1400\n*ひより「――ちとせちゃん、三秒！」\n@se se_umbrella_drop\n@show chitose magic_frozen\n鴉丸さんの手から、番傘が落ちた。\n@window off\n@wait 1200\n@fade black 2500\n@hideall\n@flag ep3\n","ep4":"// ===== 第四話 ともだち =====\n@chapter 第四話|ともだち\n@bg harbor_night cut\n@show chitose magic_frozen L\n@show shadow hiyori C\n@show mio magic_battle R\n@amb amb_waves_night\n@fade clear 1200\n@bgm bgm_shadow_lullaby\n番傘が、コンクリートの上で一度跳ねて、転がった。\n鴉丸さんは、動かない。……動けないんだと思う。ずっと聞きたかった声が、目の前の影からしたんだから。\n*ひより「ちとせちゃん、三秒！」\n同じ調子で。同じ明るさで。なのに、「一」も「二」も、続かない。\n*ひより「ちとせちゃん、今日の数学どうだった？」\n*ひより「おなかへった」\n*ひより「頭から？　尻尾から？」\n*ひより「ちとせちゃん」\n*ひより「ちとせちゃん」\n陽ノ森さんがいつも言っていた言葉を、影は、ひとつずつ、順番に吐き出していく。\n@show chitose magic_tremble\n鴉丸さんの肩が、小さく震え始めた。私は、鴉丸さんの前に出て筆を構える。手のひらが、汗で滑りそうだった。\n@se se_arrow_draw\n影が、ゆっくりと背中の弓を下ろした。陽ノ森さんの光の弓と、まったく同じ形をした――黒い弓。\n指先が空をつまむ。そこに、墨の矢が生まれる。\n*ひより「――ともだち」\n@se se_arrow_shot\n@fx darkarrow\n@se se_brush\n@fx kanji tate\n@se se_impact_heavy\n@se se_crack\n@fx crack\n@fx shake\nとっさに書いた「盾」に、黒い矢が突き刺さる。一撃で、ひびだらけ。\n陽ノ森さんの矢より、ずっと重い。\n澪「鴉丸さん、下がって！」\n@bgm bgm_shadow_rage\n*ひより「ともだち」「ともだち」「ともだち」\n@se se_arrow_rain\n@fx shakebig\n@se se_glass_break\n矢が、雨みたいに降る。「盾」が砕けた。\n@hide chitose fast\n@hide mio fast\n鴉丸さんの腕をつかんで、引きずるようにして、灯台の陰に転がり込む。\n@se se_brush\n@fx kanji kakusu\n@se se_kanji_activate\n@tint dark\nもう一画。震える手で。――「隠」。\nふたりの姿が、夜の闇に溶けた。\n@bgm stop 1500\n*ひより「ちとせちゃん、どこ？」\n影は、しばらく灯台のまわりをさまよっていた。きょろきょろと、誰かを探すみたいに。\n鴉丸さんは、自分の口を両手で押さえていた。\n声を出さないためか。声を殺すためか。私には、わからなかった。\n@hide shadow slow\nやがて影は、波の音にまぎれるように、海の方へ消えていった。\n@tint none\n@fade black 1500\n@hideall\n@amb stop 1000\n\n// ----- 澪の部屋 -----\n@bg mio_room_night cut\n@fade clear 900\n@show bonbori normal C\n澪「あれは、何なんですか」\n名前を呼んだら、来ると思った。そのとおりだった。\n@bgm bgm_bonbori\nぼんぼり「澱でございます」\n澪「陽ノ森さんの声でした」\nぼんぼり「はい」\n澪「陽ノ森さんの弓でした」\nぼんぼり「はい」\n澪「……なんで」\n@show bonbori sad\nぼんぼりは、宙でゆっくり回った。への字の口が、いつもより、ほんの少しだけ下がって見えた。\nぼんぼり「わたくしにも、わからないのでございます」\n澪「わからない？」\nぼんぼり「わたくしは、灯でございます。お預かりした言葉を燃やして、照らすのが役目です。燃えたあとのことは、存じません」\nぼんぼり「ただ……陽ノ森さまの言葉は、お返しいたしました。ですが、お返しした先に、陽ノ森さまはもういらっしゃいませんでした」\nぼんぼり「行き場のない言葉が、どこへ行くのか。わたくしは、考えたことがございませんでした」\nこの提灯は、嘘をついていない。それが、かえって怖かった。\n悪意があれば、憎めたのに。ぼんぼりには、何もない。決まりがあって、それに従っているだけ。\n澪「あなたは、いつからここにいるんですか」\n@show bonbori normal\nぼんぼり「ずいぶん昔からでございます。岬の上に、わたくしのからだがございます」\n岬。港の北の端、灯台のさらに先にある、地図にも名前の載っていない小さな岬。\n崩れかけた鳥居と、古い石灯籠がある。夜に行くと、出る――って、クラスの誰かが言っていた。\n@fade black 1200\n@hideall\n@bgm stop 1200\n\n// ----- 図書館 -----\n@bg library_archive cut\n@fade clear 900\n@bgm bgm_research\n翌日の放課後。市立図書館の、郷土資料室。\n@show chitose uniform_serious L\n@show mio uniform_serious R\n鴉丸さんは、昨夜からまた一言も喋っていない。ノートにも、ほとんど何も書かない。\nただ、私が「岬のことを調べたい」と書いたページの下に、『いく』とだけ書いて、ついてきた。\n黴と、古い紙の匂い。私は『潮見町誌』を、鴉丸さんは古い新聞の縮刷版を開く。\n@se se_page_turn\n岬の名前は、すぐに見つかった。\n@paper book\n>町誌:言問岬（こととい みさき）。岬上に言問社および石灯籠一基あり。\n>町誌:古来、漁に出て戻らぬ者の家族、灯籠に言葉を預け、海へ届けんとする習いありき。\n@paper off\n昔、潮見の漁師はよく海で死んだ。嵐で、時化で、ある日突然に。\n残された家族は、言えなかった言葉を抱えたまま、生きていくしかなかった。\nいってらっしゃいの代わりに言うはずだった何か。喧嘩したままの朝に、言いそびれた何か。\nそういう言葉を、人々は夜、岬の灯籠の前で口にした。\n灯籠に火を入れるのは、社の娘。――その娘は、「灯守（ひもり）」と呼ばれていた。\n@paper book\n>町誌:灯守ノ娘、預リシ言ノ葉ヲ海ニ読ミ上ゲ、此ヲ以テ届ケタリトス。\n@paper off\n澪「……届ける」\n声に出して、読んでいた。\n灯守は、もともと戦う人じゃなかった。言葉を受け取って、届ける人だったんだ。\n町誌の最後には、短くこう書かれていた。戦争のあと社の家系は絶え、灯籠に火を入れる人も、いなくなった、と。\n@se se_notebook_close\n@paper note\n>ちとせ:これ\n@paper off\n鴉丸さんが、縮刷版の一ページを、黙って指さしていた。\n@cg newspaper\n@se se_heartbeat\n三十年以上前の、地方面の片隅。小さな記事だった。\n鴉丸さんは、別のページを開く。また別のページ。付箋が、いくつも貼ってある。\n私が町誌を読んでいるあいだ、ずっと、これを探していたんだ。\n十年前。十八年前。二十五年前。三十二年前。\nこの町では何年かおきに、十四か十五の女の子が、原因不明の心不全で死んでいる。\n健康で。前触れもなく。ある日、突然に。\n@cg off\n@paper note\n>ちとせ:みんな、灯守だったんだと思う\n@paper off\n@bgm bgm_truth\n灯守がいなくなって、灯籠には言葉だけが流れ着くようになった。受け取る人も、届ける人もいないまま。\n言葉は溜まって、腐って、澱になる。\n澱を祓うために、灯籠は新しい灯守を作る。言葉を預かって、燃やす。\n燃えた言葉は煤になって――海へ流れる。\nその煤が、海の底に溜まって。夜になると形を持って、また這い上がってくるのだとしたら。\n@show mio uniform_shock\n澪「……ぐるぐる、回ってる」\n誰も気づかないまま、何十年も。数年ごとに、どこかの女の子が、一番言いたい言葉を口にして死にながら。\n陽ノ森さんは、その輪の、ひとつだっただけだ。\n@fade black 1500\n@hideall\n@bgm stop 1500\n\n// ----- かもめ屋・夜 -----\n@bg kamomeya_night cut\n@amb amb_night_street\n@show shadow hiyori_sit C\n@fade clear 1500\n@bgm bgm_shadow_lullaby\n夜になって、影はまた現れた。\n今度は、駅前。閉店したかもめ屋のシャッターの前。\nベンチの上で、足をぶらぶらさせて。\n@show mio uniform_serious R\n@show chitose uniform_tremble L\n*ひより「頭から？　尻尾から？」\n誰もいない隣に向かって。\n*ひより「……お腹から？」\n鴉丸さんの手が、震えながらノートを開いた。何か書こうとして、ペン先が紙の上で止まる。\n私は、ずっと考えていたことを書いた。\n@paper note\n>澪:あれは、陽ノ森さんの、届かなかった言葉なんだと思う\n>澪:陽ノ森さんは最後に「ともだち」って言った。でも、言った相手は私だった\n>澪:本当に言いたかった相手は、鴉丸さんだったのに。だから言葉は、行き場がないまま残った\n@wait 500\n>澪:受け取らなきゃいけないのは、鴉丸さんです\n@wait 1500\n>ちとせ:受け取るって、どうやって\n>澪:わからない。でも、昔の灯守は言葉を読み上げて届けた。たぶん、声が要る\n@paper off\n声が、要る。\n自分が何を書いたのか、わかっていた。\nどの言葉が最後になるかわからない人に、声を出せと言うことが、どれだけ残酷か。\n@se se_notebook_close\n鴉丸さんは、ノートを閉じた。\n@se se_transform\n@fx transform_red\n@fx flash red 500\n@show chitose magic_resolve L\nそして、変身した。\n黒い着物。赤い帯。番傘を、開かないまま肩にかついで――まっすぐ、影の方へ歩いていく。\n@show shadow hiyori C\n*ひより「ちとせちゃん」\n*ひより「ちとせちゃん、ともだち」\n@se se_arrow_draw\n墨の矢が、つがえられる。鴉丸さんは避けない。傘も開かない。歩みを、止めない。\n@se se_transform\n@show mio magic_battle R\n@se se_arrow_shot\n@se se_brush\n@fx kanji mamoru\n@se se_impact_heavy\n――「守」。\n@se se_arrow_shot\n@fx kanji mamoru\n@se se_impact_heavy\n@fx shake\nもう一本。「守」。砕けるたびに、腕に痺れが走る。\n@bgm bgm_shadow_rage\n*ひより「ともだち」「ともだち」「ともだち」\n@se se_rumble\n@hide shadow fast\n@ori shadow_giant rise\n@fx shakebig\n影が、膨れ上がっていく。街灯を越え、商店街の屋根を越え、夜空を覆うほどに。\n無数の口が開く。そのすべてが、陽ノ森さんの声で。\n*ひより「ともだち！！」\n@se se_charge_dark\n@fx shake\n巨大な黒い弓が、引き絞られる。商店街ごと吹き飛ばせるほどの、墨の渦。\n@show chitose magic_lookup\n鴉丸さんが、ようやく足を止めて、見上げた。\n小さな背中。黒い着物の肩が、一度、大きく上下した。\n息を、吸ったんだ。\n……この子は、喋るつもりだ。どの言葉が最後になるか、わからないまま。\n@bgm stop 800\n私は、筆を握り直した。何を書けばいいかは、もうわかっていた。\n震える手で、一画ずつ、祈るように。\n@se se_brush\n@fx kanji todoku\n@se se_kanji_activate\n――「届」。\n字が、鴉丸さんの喉元に、吸い込まれていった。\n@wait 1000\n@bgm bgm_confession\nちとせ「――うるさい」\n@fx glitch\n影の動きが、止まった。\nちとせ「うるさいんだよ、お前は。いっつも」\n何日も使っていなかった喉から絞り出した、がさがさの声。それでも、商店街の端まで届くくらい、大きかった。\nちとせ「三秒三秒って急かして。数学のことばっか聞いて」\nちとせ「頭からか尻尾からかって、どうでもいいことで、半年も揉めて」\n@se se_umbrella_drop\n鴉丸さんは、番傘を足元に置いた。武器を、捨てた。\nちとせ「勝手に灯守になって。勝手に隣に座って。勝手に、ちとせちゃんって呼んで」\nちとせ「勝手に、日記なんかつけて」\n@show chitose magic_cry\nちとせ「……勝手に、死んで」\n@ori off fade\n@show shadow hiyori C slow\n巨大な影が、ゆっくりと弓を下ろしていく。人の大きさに、戻っていく。\n*ひより「ちとせちゃん」\nさっきまでの叫び声じゃない。小さな、普通の、陽ノ森さんの声。\n*ひより「ちとせちゃん、ともだち」\nちとせ「知ってる」\nちとせ「知ってたよ、ばか。最初から。お前が来た日から、ずっと」\n息が止まる。鴉丸さんは、まだ立っている。まだ、言葉が続いている。\nちとせ「私も、お前の――」\n@bgm stop cut\n@se se_heartbeat\n鴉丸さんが、止まった。\n喉の奥で、言葉が引っかかったのが、わかった。日記に書いてあった、あの感じ。\n鴉丸さんの預けた言葉が何なのか、まだ誰も知らない。\nもしも――それが、今の言葉だったら。\n@se se_heartbeat\n@wait 1500\n鴉丸さんは、引っかかった言葉を、無理に押し出さなかった。\n目を閉じて、ひとつ、深く息をついて。\n別の言葉を、選んだ。\n@bgm bgm_sunset_bench 2500\nちとせ「――私も、お前のこと、大好きだった。ひより」\n@se se_purify\n@fx flash orange 900\n@hide shadow cut\n@show hiyori spirit_smile C\n@particles embers on\n影の中心に、灯がともった。\n夕焼けみたいな、橙色。たい焼き屋のベンチを透かしていた、あの光の色。\nひより「えへへ」\nひより「……言えた」\n光が、笑った。それから、少しだけ首をかしげて、私の方を向く。\nひより「澪ちゃんも、ね。ごめんね、びっくりさせて」\n@show mio magic_cry R\n何も言えなかった。言えないまま、ぼろぼろ泣いた。\n@particles embers off\n@particles gold on\n@hide hiyori slow\n光が、ほどけた。金色の粉になって、夜の商店街に、ふわふわと降る。\nシャッターの上にも。ベンチの上にも。鴉丸さんの髪の上にも。\n@show chitose uniform_crysit L\n鴉丸さんはその場にしゃがみ込んで、声を上げて泣いた。\n何日分も、何か月分も。もしかしたら、もっとずっと前から溜めていた分も、全部吐き出すみたいに。\n@show mio uniform_cry R\n隣にしゃがんで、背中をさする。\n……喋っても、鴉丸さんは、死ななかった。\n@bgm stop 2500\n@particles gold off\n@wait 800\n@se se_bon\n@show bonbori dim C\nぼんぼり「……おつかれさまでございます」\n声が、いつもより小さい。和紙の中の灯が、ちらちらと、不安定に揺れている。\nぼんぼり「汐見さま、鴉丸さま。お伝えしなければならないことがございます」\nぼんぼり「陽ノ森さまの言葉が、届きました。それで、わたくし、わかったのでございます」\nぼんぼり「届く、というのが、どういうことなのか。……そして、わたくしの中に、届いていない言葉が、どれだけあるのか」\n@se se_rumble_distant\n@fx shake\n遠くで、海鳴りがした。\n地鳴りみたいに、低く、長い音。シャッターが、かたかたと震える。\nぼんぼり「わたくしの中で溜まっていたものが、いま、目を覚ましました」\n@bgm bgm_cape_dread\n@hideall\n@bg north_sky_dark slow\n北の夜空が、黒く染まっていく。\n岬の上に、何かが、立ち上がろうとしている。\n@se se_voices_girls\nそこから、何百、何千という声が、風に乗って聞こえてきた。\nどれも――女の子の声だった。\n@window off\n@wait 1500\n@fade black 2500\n@amb stop 2000\n@bgm stop 2500\n@flag ep4\n","ep5":"// ===== 第五話 ただいま =====\n@chapter 第五話|ただいま\n@bg town_night_windows cut\n@amb amb_wind_cape\n@fade clear 1500\n@bgm bgm_cape_dread\n町じゅうの窓に、明かりがついていく。\n眠っていた人たちが起き出して、窓を開け、玄関から顔を出して、北の空を見上げている。\n@se se_voices_town\n声が、聞こえるんだ。\n泣き声のような、呼び声のような、たくさんの女の子の声。\nそれに混じって、もっと古い声。しわがれた声。男の人の声。子供の声。\n何十年も前に、誰かが誰かに言えなかった言葉たちが、夜の潮見を覆いつくしている。\n老人「……あんた。あんた、今の、あんたの声か」\n漁協の前で、腰の曲がったおじいさんが、海に向かって呟いていた。\n@show chitose magic_battle L\n@show mio magic_battle R\n@show bonbori dim C\nぼんぼり「お急ぎくださいませ。わたくしの中の言葉が、もう、抑えきれません」\n@fade black 500\n@hideall\n@bg cape_path_night cut\n@fade clear 500\n@se se_run_footsteps\n@show chitose magic_battle L\n@show mio magic_battle R\n灯台を過ぎると、道は細い山道に変わる。木の根と、苔むした石段。\n@se se_brush\n筆先に小さく「灯」を書いて、足元を照らす。鴉丸さんが前に立って、張り出した枝を番傘で払っていく。\n息が切れる。脚が重い。それでも、止まれない。\n石段の終わりに、崩れかけた鳥居。その向こうに――言問岬。\n@fade black 900\n@hideall\n\n// ----- 言問岬 -----\n@bg cape_shrine_night cut\n@fade clear 1200\n@bgm stop 2000\n苔むした石畳。屋根の落ちた社の跡。\n崖の縁に、人の背丈ほどの、古い石灯籠。火袋の中は、真っ暗だった。\n@se se_rumble\n@ori mountain rise\n@fx shakebig\nその向こう――崖の下の海から、それは、立ち上がっていた。\n@bgm bgm_final_battle\n澱と呼ぶには、あまりにも大きい。海面から夜空まで届く、黒い山。\n@se se_voices_girls\nその表面に、数えきれないほどの口。ひとつひとつが、別々の言葉を叫んでいる。\n少女たちの声「おかあさん」「ありがとう」「ごめんね」「すき」「まって」\n少女たちの声「いかないで」「おはよう」「だいじょうぶ」「ありがとう」「ありがとう」\n十四歳か、十五歳。それくらいの、女の子たちの声。\n@show chitose magic_shock L\n@show mio magic_shock R\n澪「……あれが、全部」\n@show bonbori dim C\nぼんぼり「はい。わたくしがこれまで灯守にしてまいりました方々が、最後に口にされた言葉でございます」\nぼんぼり「受け取る器のなかった言葉。届くべき相手に、届かなかった言葉。それと、この町の皆さまが流してこられた言葉」\nぼんぼり「燃やして、煤にして、海に流して。……わたくしは、それで片付いたものと思っておりました」\n@se se_voices_girls\n少女たちの声「きいて」\n@fx glitch\n少女たちの声「だれか、きいて」\n@se se_ink_lunge\n@se se_impact_heavy\n@fx ink\n@fx shakebig\n@hide bonbori fast\n黒い腕が、岬めがけて振り下ろされた。\n@show chitose magic_battle L\n@show mio magic_battle R\n@se se_umbrella_open\n@se se_wood_break\n@fx impact\n戦いに、ならなかった。\n鴉丸さんの番傘は、最初の一撃で、骨ごと吹き飛んだ。\n@se se_brush\n@fx kanji tate\n@se se_glass_break\n私の「盾」は、紙みたいに破れる。\n@se se_brush\n@fx kanji tome\n@se se_crack\n@fx crack\n「止」を書いても、一瞬ひるむだけ。字の数が、まるで足りない。\n向こうは数百の言葉でできているのに、こっちは一画ずつしか書けない。\n@se se_impact_heavy\n@fx flash red 700\n@fx shakebig\n@show chitose magic_kneel L\n@show mio magic_hurt R\n石灯籠の前まで、押し戻される。\n鴉丸さんの額から血が流れて、片目をふさいでいる。私の右腕は、もう肘から先の感覚がない。\nちとせ「……お前、まだ書けるか」\n澪「書けます」\nちとせ「嘘つけ」\n澪「嘘です」\n@show chitose magic_smirkhurt\n鴉丸さんが、ほんの少しだけ、笑った。\n@se se_rumble\n@fx shake\n黒い山が、また腕を振り上げる。\n@bgm stop 1500\n@se se_bon\n@show bonbori dim C\nぼんぼり「汐見さま。鴉丸さま。ひとつ、方法がございます」\n@bgm bgm_bonbori_last\nぼんぼり「お預かりした言葉をお返しする方法は、ふたつございます。ひとつは、ご本人が口にされること。そのときは、灯も、器も、消えます」\nぼんぼり「陽ノ森さまが、そうでございました」\nぼんぼり「もうひとつは――わたくしが、灯を消すこと」\nぼんぼり「わたくしの灯が消えれば、中にある言葉は、すべてほどけて外に出ます。お二人の言葉も、お二人のもとに戻ります」\nぼんぼり「契約はなくなり、灯守ではなくなりますが――器は、そのまま残ります」\n澪「それなら、なんで――」\nぼんぼり「ただ、ほどけた言葉は、受け取られなければ、また澱になります。あれと同じでございます」\nぼんぼり「ですから、届けていただきたいのです。汐見さまの筆で。昔の灯守さまが、そうなさっていたように」\n澪「でも、あんなにたくさん……私、一画ずつしか」\nぼんぼり「消える最後のひととき、わたくしの灯を、すべて汐見さまの筆にお貸しいたします」\nぼんぼり「何十年分の言葉を燃やしてきた灯でございます。ひと文字くらいなら、夜空いっぱいに書けましょう」\n……引っかかった。\n澪「消える、最後の……ひととき、って」\n@wait 900\nぼんぼり「灯が消えれば、器も消えます」\nぼんぼり「わたくしの場合も、同じでございます」\n@amb stop 1500\n風が、止まった気がした。\n陽ノ森さんが死んだあとの夜、私の部屋で言ったのと、まったく同じ言葉。\nあのときと同じ、少しも変わらない声の調子で。\n@show chitose magic_glare L\nちとせ「……お前」\nちとせ「お前、それでいいのか」\n@wait 1200\n@show bonbori soft C\nぼんぼりは、すぐには答えなかった。\n和紙の中で、灯がちらちらと揺れる。それから、ふわりと、鴉丸さんの目の高さまで降りてきた。\nぼんぼり「鴉丸さま」\nちとせ「なんだ」\nぼんぼり「わたくし……それでいいのかと、聞かれたのは、初めてでございます」\nへの字の口が、ほんの少しだけ、形を変えた気がした。\nぼんぼり「最後の灯守さまは、昭和二十年の夏、ご出征される許嫁さまへの言葉を、ひとつ、わたくしにお預けになりました」\nぼんぼり「必ず届けると、おっしゃいました。そして、届ける前に、空襲でお亡くなりになりました」\nぼんぼり「わたくしは、待っておりました。取りに来てくださる方を。誰かが来て、預かった言葉を届けてくれるのを」\nぼんぼり「待っているうちに、ずいぶん長い時間が経ちまして。何を待っていたのかも、忘れてしまいました」\nぼんぼり「言葉を預かる、ということだけが残って。……わたくしは灯ですから。照らすことしか、知らなかったのです」\n@se se_rumble\n@fx shakebig\n黒い山の腕が、振り下ろされ始めた。\n@show bonbori happy C\nぼんぼり「聞いてくださって、ありがとうございました。鴉丸さま。汐見さま」\nぼんぼり「ぼんぼり、感激いたしました」\n@hide bonbori fast\nぼんぼりは、石灯籠の火袋の中へ、するりと入っていった。\n澪「待っ――」\n@bgm stop cut\n@se se_lantern_ignite\n@fx lanternfire\n@fx flash white 1600\n@cg lantern_white_fire cut\n石灯籠が、燃えた。\n@bgm bgm_todoku\n橙でも、赤でも、青白くもない。すべての色が混ざった、真っ白な灯。\n何十年分の言葉を燃やしてきた灯が、最後に、ありったけの光を吐き出している。\n光が岬を包み、振り下ろされた黒い腕を、押し返していく。\n@cg off\n@show mio magic_glow R\n@show chitose magic_kneel L\n筆に、その光が流れ込んでくる。熱い。重い。感覚のなかった右腕に、炎みたいな力が満ちていく。\nちとせ「汐見！」\n@hideall\n@cg two_hands_brush\n鴉丸さんが、私の背中を支えた。左手で肩を。右手で、筆を握る私の右手を。\nふたり分の手で、ひとつの筆を握る。\nちとせ「書け」\n澪「……うん」\n@se se_brush_big\n@fx flash white 400\n一画目。光の線が、岬から、海の向こうまで伸びていく。\n@se se_brush_big\n@fx flash white 400\n二画目。三画目。夜空いっぱいに、字が描かれていく。黒い山よりも大きく。町全体を、覆うほどに。\n最後の一画は、ふたりで引いた。\n@se se_kanji_big\n@fx flash white 1400\n@cg todoku_sky cut\n――「届」。\n@wait 1500\n@se se_lantern_extinguish\n石灯籠の灯が、ふっと、消えた。\n@ori off purify\n@particles lanterns on\nそして、黒い山が――ほどけた。\n崩れたんじゃない。砕けたんでもない。毛糸の玉がほどけるみたいに、一本一本の細い糸に分かれていく。\nその一本一本が、小さな光になった。蛍みたいな、灯籠みたいな、手のひらほどの光。\n何百、何千という光が、夜の海に広がって――夜空の「届」の字に触れて、向きを変える。\n海から、町へ。\n@cg off slow\n@bg town_lights_descend slow\n光が、潮見の町に降りていく。\n港に。商店街に。坂の上の家々に。窓を開けて空を見上げていた、人たちのもとへ。\n漁協の前のおじいさんの胸に、ひとつの光が吸い込まれた。おじいさんは膝をついて、両手で顔を覆った。\n坂の上の窓辺で、年配の女の人が、光を両手で受け止めて、何度も、何度も頷いていた。\nずっと昔に、娘さんを亡くした人だったのかもしれない。\n三十年以上前の新聞の片隅。そこに載っていた女の子の言葉が、ようやく、届いたのかもしれない。\n@bg cape_shrine_lights slow\n@show chitose magic_wonder L\n@show mio magic_wonder R\nひとつの光が、ふわふわと岬の上に戻ってきて――鴉丸さんの前で、止まった。\n鴉丸さんが、息を呑む。両手を、そっと差し出す。\n光は、その掌の上に、すとんと降りた。\n@se se_soft_chime\n祖母の声「……ちとせ」\n祖母の声「ひとりにして、ごめんねえ。……おかえり、ちとせ。ごはん、ちゃんと食べなさいよ」\n@show chitose magic_cry L\n光は、鴉丸さんの掌に、溶けていった。\n鴉丸さんは何も言わなかった。掌を胸に押し当てて、ただ、小さく、何度も頷いていた。\n@fade white 2500\n@hideall\n@particles off\n@bgm stop 2500\n\n// ----- 夜明け -----\n@bg cape_dawn cut\n@amb amb_waves_dawn\n@fade clear 2500\n@bgm bgm_dawn\n気がつくと、ふたりとも、制服姿に戻っていた。\n@show chitose uniform_tired L\n@show mio uniform_tired R\n筆も、番傘も、もうない。胸の真ん中にあった灯の感覚も、消えていた。\n代わりに――喉の奥に、何かがあった。\n@se se_word_return\n舌の上に、小さな、温かいものが戻ってきている。\nずっと白く霞んでいた場所に、ひとつの言葉が、ぴたりと収まった。\n……ああ。そうか。\nこれだったんだ。\n@show chitose uniform_blush\n隣を見ると、鴉丸さんも、口元を押さえて固まっていた。\n目を丸くして。それから真っ赤になって、ぷいっと横を向く。\n澪「……なんだったんですか」\nちとせ「言わん」\n澪「言っても、もう死なないですよ」\nちとせ「死ななくても言わん」\n澪「私は、わかりましたけど」\nちとせ「お前も言うな」\n@show mio uniform_smallsmile\n澪「言いませんよ。……まだ」\n@show chitose uniform_look\n「まだ」に、鴉丸さんが少しだけ、こっちを見た。\n@se se_paper_rustle\n石灯籠の火袋の中に、何かが落ちていた。\n@hideall\n@cg burnt_lantern\n手のひらほどの、丸い紙の提灯。和紙は焦げて、ところどころ穴が開いている。\n点の目も、への字の口も、もう描かれていない。ただの紙。ただの、古い提灯。\n……右半分だけが、うっすらと、茶色く染みていた。\n胸に抱いた。\n東の空が、白み始めていた。\n@fade black 2500\n@cg off cut\n@amb stop 2000\n@bgm stop 2500\n\n// ----- ひと月後・墓地 -----\n@bg cemetery_day cut\n@amb amb_birds_cemetery\n@fade clear 1800\n@bgm bgm_epilogue\nひと月が経った。潮見の町に、澱は一度も出ていない。\nあの夜のことは、いろいろに語られている。集団幻覚。季節外れの蛍。岬の神様が帰ってきた。\n言問社には花が手向けられるようになって、崩れていた鳥居は、漁協の人たちが少しずつ直している。\n鴉丸さんは、普通に喋るようになった。ぶっきらぼうで短い、機嫌の悪い猫みたいな喋り方は、ちっとも変わらない。\n数学の小テストは、私が教えた甲斐あって、ぎりぎり赤点を免れた。\n@show chitose uniform_normal L\n@show mio uniform_normal R\n週末。陽ノ森家のお墓に、たい焼きを二つ供えた。\nちとせ「頭から食うやつ用と、尻尾から食うやつ用だ」\n向きを逆にして並べる鴉丸さん。\n……陽ノ森さんがどっち派だったか、結局、聞きそびれちゃったな。\n線香の煙が、まっすぐ昇っていく。\n手を合わせて、ゆっくりと、口を開いた。\n喉の奥に戻ってきた、あの言葉を。\n@bgm stop 2000\n@wait 1500\n@show mio uniform_gentle R\n澪「……ひより」\n@wait 1000\n初めて、声に出した。\n@bgm bgm_hiyori_piano\n澪「ひよりでいいよって、言ってくれたのに。私、一回も呼べなかったね」\nそれが、私の一番言いたかった言葉。\nたった三日しか一緒にいなかった人の名前。隣の席の、知らない人じゃない人の名前。\nあの夕方、もう少しだけ勇気があれば、言えたはずの名前。\n澪「ひより。ありがとう。……また来るね」\n@show chitose uniform_deadpan L\nちとせ「数学、赤点じゃなかったぞ」\n墓石に向かってぼそっと言う鴉丸さんに、ちょっとだけ、笑った。\n@fade black 1500\n@hideall\n@amb stop 1500\n@bgm stop 1500\n\n// ----- 澪の家 -----\n@bg mio_house_entrance_evening cut\n@fade clear 1200\n@bgm bgm_home\n澪の母「どうぞ、上がって」\n@show chitose uniform_stiff C\nその日の夕方。うちの玄関で、鴉丸さんは石像みたいに固まっていた。\nお母さんが、どうしても夕飯に呼びたいって言い出したんだ。いつもお弁当を分けてもらってる子でしょう、って。\n……分けてるのは私の方なんだけど、話がややこしくなるので黙っておいた。\nちとせ「……おじゃま、しま」\n靴を脱ぎながら言いかけて、鴉丸さんが、止まる。\n@se se_kitchen\n台所から、煮物の匂い。誰かが夕飯を作って、待っている家の匂い。\n廊下の明かりが、温かい色をしていた。\n@show chitose uniform_soft\n鴉丸さんの口が、勝手に動いた。\nちとせ「――ただいま」\n@bgm stop cut\n@window off\n@wait 1600\n@se se_heartbeat\n@show chitose uniform_pale\n@window on\n玄関が、しんと静まり返った。\n心臓が、止まりそうになった。鴉丸さんの顔から、さっと血の気が引いていく。\nふたりとも、同じことを思い出していた。\nかもめ屋のベンチ。夕陽。何の前触れもなく倒れた、あの軽い音。\n@se se_heartbeat\n一秒。\n@wait 600\n@se se_heartbeat\n+　二秒。\n@wait 600\n@se se_heartbeat\n+　三秒。\n@show mmother smile R\n澪の母「はあい、おかえりなさい。手、洗ってきてね」\n@bgm bgm_home\n@show chitose uniform_stunned C\n鴉丸さんは――立っていた。\n倒れなかった。\n自分の胸に、手を当てる。心臓の音を確かめるみたいに。\nちとせ「……生きてる」\n澪「生きてます」\nちとせ「……ただいまって言った」\n澪「言いましたね」\n@show chitose uniform_blushangry hop\n@fx shake\nちとせ「言うな」\n澪「言ってません。聞いただけです」\n@show chitose uniform_blush\n鴉丸さんが、耳まで真っ赤になった。こらえきれずに噴き出す。笑いながら、少しだけ、泣いた。\n鴉丸さんの預けた言葉は、「ただいま」だった。\nおばあちゃんが死んで、誰も待っていない部屋に帰るようになってから。\n一番言いたくて、一番、言う相手のいなかった言葉。\n@fade black 900\n@hideall\n@bg mio_house_dining_night cut\n@fade clear 900\n@show chitose uniform_eating L\n@show mmother delighted R\n@se se_bite\nその夜、鴉丸さんは、白米を四杯おかわりした。\n澪の母「まあまあ、いい食べっぷり！　もう一杯いく？」\nちとせ「……いただきます」\n澪「お母さん、さすがにストップ」\n@fade black 1200\n@hideall\n@bgm stop 1500\n\n// ----- かもめ屋・ふたたび -----\n@bg kamomeya_sunset cut\n@amb amb_shopping_street\n@fade clear 1500\n@bgm bgm_sunset_bench\n翌日の夕方。かもめ屋のベンチに、ふたりで並んで座った。\n@cg lantern_eaves\n軒下に、新しい提灯がひとつ、ぶら下がっている。\n焦げを継ぎ当てた跡のある、丸い紙の提灯。右半分だけが、うっすらと茶色い。\nお店のおばさんに頼んで、吊るしてもらった。夜になると、中に小さな電球を入れて、灯してくれるらしい。\n@cg off\n@show chitose uniform_eating L\n@show mio uniform_smile R\n澪「ちとせ、それ何個目？」\nちとせ「七」\n澪「おごりって言ったけど、限度ってあるよね」\nちとせ「命の恩人だぞ」\n澪「それ、お互い様だと思うんだけど」\n@se se_bite\nちとせは尻尾から。私はお腹から。第三勢力は、まだ健在だ。\n夕陽が、商店街を橙色に染めている。ひと月前と、同じ色。\n膝の上の紙袋を握って。少しだけ勇気を出して、隣を向いた。\n@show mio uniform_shy R\n澪「ねえ、ちとせ」\n@show chitose uniform_normal L\nちとせ「なんだ」\n澪「これからも、よろしくね」\n@bgm stop cut\n@amb stop cut\n@window off\n@wait 2200\n@window on\n@show chitose uniform_softsmile L\n@amb amb_shopping_street 600\nちとせ「……おう。よろしく、澪」\n@bgm bgm_sunset_bench 2000\n初めて、名前で呼ばれた。\n@show mio uniform_blush R\n顔が熱くなる。ちとせはもう前を向いて、八個目の袋に手を伸ばしていた。\n二人とも、倒れなかった。\n@hideall\n@cg lantern_eaves slow\n@se se_bon_soft\n風もないのに、軒下の提灯が、ぽん、と小さく揺れた。\n@window off\n@wait 2000\n@fade black 3000\n@cg off cut\n@end\n"};
+</script>
+<script>
+(() => {
+'use strict';
+
+/* ================= constants ================= */
+const P = { img:'assets/images/', bgm:'assets/audio/bgm/', se:'assets/audio/se/', amb:'assets/audio/ambient/' };
+const EPS = ['ep1','ep2','ep3','ep4','ep5'];
+const EPNAME = {
+  ep1:'第一話　あかりの消える音', ep2:'第二話　聞かれなかったので', ep3:'第三話　筆談',
+  ep4:'第四話　ともだち', ep5:'第五話　ただいま'
+};
+const POS = { LL:13, L:26, C:50, R:74, RR:87 };
+const NAMECOLOR = {
+  'ひより':'#f2a85a','澪':'#93cbe8','ちとせ':'#e0606b','ぼんぼり':'#efcf78',
+  'ひよりの母':'#cdbfae','澪の母':'#cdbfae','担任':'#aab0bd','老人':'#aab0bd',
+  '祖母の声':'#e2cfa4','澱':'#8a8f9c','少女たちの声':'#a6a2b8'
+};
+const SPEAKER = { 'ひより':'hiyori','澪':'mio','ちとせ':'chitose','ぼんぼり':'bonbori','ひよりの母':'hmother','澪の母':'mmother' };
+const WRITER = { 'ちとせ':'chitose','澪':'mio','ひより':'hiyori','町誌':'book' };
+const FLASH = { white:'#ffffff', orange:'#ffb35c', blue:'#a8dcff', red:'#b3122a', gold:'#ffe08a', black:'#000000' };
+const FXDEF = {
+  arrow:     { file:'light_arrow',            cls:'fx-arrow', ms:520 },
+  darkarrow: { file:'ink_arrow',              cls:'fx-arrow', ms:520 },
+  beam:      { file:'okuribi_beam',           cls:'fx-beam',  ms:2000 },
+  impact:    { file:'impact_burst',           cls:'fx-pop',   ms:620 },
+  ink:       { file:'ink_splash',             cls:'fx-full',  ms:820 },
+  umbrella:  { file:'umbrella_guard',         cls:'fx-pop',   ms:700 },
+  crack:     { file:'shield_crack',           cls:'fx-full',  ms:820 },
+  transform_orange:{ file:'transform_ring_orange', cls:'fx-ring', ms:1600 },
+  transform_blue:  { file:'transform_ring_blue',   cls:'fx-ring', ms:1600 },
+  transform_red:   { file:'transform_ring_red',    cls:'fx-ring', ms:1600 },
+  lanternfire:{ file:'lantern_white_fire',    cls:'fx-bloom', ms:2600 },
+  shadowpass:{ file:'shadow_streak',          cls:'fx-arrow', ms:700 },
+  tears:     { file:'paper_tear_drops',       cls:'fx-tears', ms:3000 },
+  purify:    { file:'purify_burst',           cls:'fx-bloom', ms:2600 }
+};
+
+const $ = s => document.querySelector(s);
+const game = $('#game');
+
+const store = {
+  get(k, d){ try { const v = localStorage.getItem('hmr_' + k); return v == null ? d : JSON.parse(v); } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem('hmr_' + k, JSON.stringify(v)); } catch(e){} }
+};
+const cfg = Object.assign({ text:30, auto:1500, bgm:.7, se:.85, amb:.55 }, store.get('cfg', {}));
+const flags = store.get('flags', {});
+
+/* ================= parser ================= */
+function parse(src){
+  const out = [];
+  for (let raw of src.split('\n')){
+    let l = raw.trim();
+    if (!l || l.startsWith('//')) continue;
+    if (l[0] === '@'){
+      const body = l.slice(1);
+      const sp = body.search(/\s/);
+      const c = sp < 0 ? body : body.slice(0, sp);
+      const rest = sp < 0 ? '' : body.slice(sp).trim();
+      out.push({ t:'cmd', c, a: rest ? rest.split(/\s+/) : [], raw: rest });
+      continue;
+    }
+    if (l[0] === '>'){
+      const m = l.slice(1); const i = m.indexOf(':');
+      out.push({ t:'write', who: m.slice(0, i), text: m.slice(i + 1) });
+      continue;
+    }
+    let append = false;
+    if (l[0] === '+'){ append = true; l = l.slice(1); }
+    const m = l.match(/^(\*?)([^「」\s]{1,10})(「[\s\S]*」)$/);
+    if (m) out.push({ t:'text', name:m[2], glitch: !!m[1], text:m[3], append });
+    else out.push({ t:'text', name:'', glitch:false, text:l, append });
+  }
+  return out;
+}
+const SCRIPTS = {};
+for (const k of EPS) SCRIPTS[k] = parse(SCENARIO[k]);
+
+/* ================= runtime state ================= */
+const G = {
+  epi:0, pc:0, linePc:0, token:0, running:false,
+  fast:false, skip:false, auto:false, hidden:false, modal:null,
+  typing:false, typeSkip:false, advanceR:null, autoT:0, lastLen:0,
+  pend:new Set(), log:[], want:{ bgm:'', amb:'' }, centerOn:false
+};
+const CH = {};
+let bgFront = 'A';
+
+function abort(){
+  G.token++;
+  G.running = false;
+  clearTimeout(G.autoT);
+  for (const r of [...G.pend]) r();
+  G.pend.clear();
+  G.advanceR = null;
+  G.typing = false;
+}
+function sleep(ms){
+  if (G.fast || ms <= 0) return Promise.resolve();
+  if (G.skip) ms = Math.min(ms, 50);
+  return new Promise(r => {
+    const done = () => { G.pend.delete(done); r(); };
+    G.pend.add(done);
+    setTimeout(done, ms);
+  });
+}
+const raw = ms => new Promise(r => setTimeout(r, ms));
+
+/* ================= input ================= */
+function waitClick(){
+  if (G.fast) return Promise.resolve();
+  return new Promise(r => {
+    const done = () => {
+      G.pend.delete(done); G.advanceR = null; clearTimeout(G.autoT);
+      $('#waiticon').classList.remove('on'); r();
+    };
+    G.advanceR = done; G.pend.add(done);
+    $('#waiticon').classList.add('on');
+    schedAuto();
+  });
+}
+function schedAuto(){
+  clearTimeout(G.autoT);
+  if (!G.advanceR || G.modal) return;
+  if (G.skip) G.autoT = setTimeout(() => G.advanceR && G.advanceR(), 35);
+  else if (G.auto) G.autoT = setTimeout(() => G.advanceR && G.advanceR(), cfg.auto + G.lastLen * 45);
+}
+function advance(){
+  if (G.modal || !G.running) return;
+  if (G.hidden){ setHidden(false); return; }
+  if (G.typing){ G.typeSkip = true; return; }
+  if (G.advanceR) G.advanceR();
+}
+function setHidden(v){ G.hidden = v; game.classList.toggle('uihidden', v); }
+
+game.addEventListener('click', e => {
+  if (e.target.closest('button,#modal,#title,#boot,input')) return;
+  advance();
+});
+game.addEventListener('contextmenu', e => {
+  e.preventDefault();
+  if (G.modal){ closeModal(); return; }
+  if (G.running) setHidden(!G.hidden);
+});
+game.addEventListener('wheel', e => {
+  if (G.modal || !G.running) return;
+  if (e.deltaY < 0) openLog(); else advance();
+}, { passive:true });
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape'){ if (G.modal) closeModal(); else if (G.running) setHidden(!G.hidden); return; }
+  if (G.modal) return;
+  if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); if (document.activeElement && document.activeElement.tagName === 'BUTTON' && !G.running) return; advance(); }
+  if (e.key === 'Control' && G.running && !G.skip){ G.ctrlSkip = true; setSkip(true); }
+  if ((e.key === 'a' || e.key === 'A') && G.running) setAuto(!G.auto);
+});
+window.addEventListener('keyup', e => { if (e.key === 'Control' && G.ctrlSkip){ G.ctrlSkip = false; setSkip(false); } });
+
+function setAuto(v){ G.auto = v; if (v) G.skip = false; syncMenu(); schedAuto(); }
+function setSkip(v){ G.skip = v; if (v) G.auto = false; syncMenu(); if (v && G.typing) G.typeSkip = true; schedAuto(); }
+function syncMenu(){
+  document.querySelector('[data-act=auto]').classList.toggle('on', G.auto);
+  document.querySelector('[data-act=skip]').classList.toggle('on', G.skip);
+}
+
+/* ================= audio ================= */
+const AU = { bgm:{ el:null, name:'' }, amb:{ el:null, name:'' } };
+function fadeTo(el, target, ms){
+  return new Promise(res => {
+    if (!el) return res();
+    if (ms <= 0){ el.volume = Math.max(0, Math.min(1, target)); return res(); }
+    const from = el.volume, t0 = performance.now();
+    const step = now => {
+      const k = Math.min(1, (now - t0) / ms);
+      el.volume = Math.max(0, Math.min(1, from + (target - from) * k));
+      if (k < 1) requestAnimationFrame(step); else res();
+    };
+    requestAnimationFrame(step);
+  });
+}
+function playLoop(kind, name, fadeArg){
+  if (G.fast){ G.want[kind] = name; return; }
+  const ch = AU[kind];
+  if (ch.el && ch.name === name) return;
+  if (ch.el){ const old = ch.el; fadeTo(old, 0, 700).then(() => { old.pause(); old.removeAttribute('src'); }); }
+  const el = new Audio(P[kind] + name + '.mp3');
+  el.loop = true; el.volume = 0;
+  el.play().catch(() => {});
+  ch.el = el; ch.name = name;
+  fadeTo(el, cfg[kind], G.skip ? 0 : (+fadeArg || 1200));
+}
+function stopLoop(kind, arg){
+  if (G.fast){ G.want[kind] = ''; return; }
+  const ch = AU[kind]; if (!ch.el) return;
+  const old = ch.el, ms = arg === 'cut' ? 0 : (+arg || 1000);
+  ch.el = null; ch.name = '';
+  fadeTo(old, 0, G.skip ? 0 : ms).then(() => { old.pause(); old.removeAttribute('src'); });
+}
+function se(name){
+  if (G.fast || G.skip) return;
+  const a = new Audio(P.se + name + '.mp3');
+  a.volume = cfg.se; a.play().catch(() => {});
+  return a;
+}
+function stopAllAudio(){ stopLoop('bgm', 'cut'); stopLoop('amb', 'cut'); }
+
+/* ================= stage primitives ================= */
+function bg(name, mode){
+  const url = name === 'black' ? 'none' : `url("${P.img}bg/${name}.png")`;
+  const next = bgFront === 'A' ? $('#bgB') : $('#bgA');
+  const cur  = bgFront === 'A' ? $('#bgA') : $('#bgB');
+  bgFront = bgFront === 'A' ? 'B' : 'A';
+  let ms = { fade:800, cut:0, slow:2200, fast:300 }[mode || 'fade'] ?? 800;
+  if (G.fast || G.skip) ms = 0;
+  next.style.transitionDuration = '0ms'; next.style.opacity = 0;
+  next.style.backgroundImage = url; next.style.zIndex = 2; cur.style.zIndex = 1;
+  void next.offsetWidth;
+  next.style.transitionDuration = ms + 'ms'; next.style.opacity = 1;
+  const finish = () => { cur.style.transitionDuration = '0ms'; cur.style.opacity = 0; };
+  if (!ms){ finish(); return; }
+  return sleep(ms).then(finish);
+}
+function show(id, file, pos, mode){
+  if (pos && POS[pos] == null){ mode = pos; pos = undefined; }
+  let el = CH[id]; const fresh = !el;
+  if (fresh){
+    el = document.createElement('img');
+    el.className = 'chara' + (id === 'bonbori' ? ' float' : '');
+    el.alt = ''; el.dataset.id = id;
+    el.style.opacity = 0; el.style.left = POS[pos || 'C'] + '%';
+    $('#charas').append(el); CH[id] = el;
+  }
+  if (file && file !== '-') el.src = `${P.img}chara/${id}_${file}.png`;
+  if (pos && !fresh) el.style.left = POS[pos] + '%';
+  const ms = (G.fast || G.skip || mode === 'cut') ? 0 : mode === 'slow' ? 1000 : 350;
+  el.style.transitionDuration = `${ms}ms,300ms,${G.fast ? 0 : 550}ms`;
+  if (fresh) void el.offsetWidth;
+  el.style.opacity = 1;
+  if (mode === 'hop' && !G.fast){ el.classList.remove('hop'); void el.offsetWidth; el.classList.add('hop'); }
+}
+function hide(id, mode){
+  const el = CH[id]; if (!el) return;
+  delete CH[id];
+  const ms = (G.fast || G.skip || mode === 'cut') ? 0 : mode === 'slow' ? 1300 : mode === 'fast' ? 150 : 350;
+  el.style.transitionDuration = `${ms}ms,300ms,550ms`;
+  el.style.opacity = 0;
+  setTimeout(() => el.remove(), ms + 30);
+}
+function hideAll(){ for (const id of Object.keys(CH)){ CH[id].remove(); delete CH[id]; } }
+function setDims(activeId){
+  const on = activeId && CH[activeId];
+  for (const id in CH) CH[id].classList.toggle('dim', !!on && id !== activeId);
+}
+function ori(name, mode){
+  const box = $('#ori');
+  if (name === 'off'){
+    const el = box.firstElementChild; if (!el) return;
+    if (G.fast || G.skip || mode === 'cut'){ el.remove(); return; }
+    if (mode === 'purify'){
+      el.className = 'purify'; burst('gold');
+      setTimeout(() => el.remove(), 2700);
+    } else {
+      el.style.transition = 'opacity 1.2s'; el.style.opacity = 0;
+      setTimeout(() => el.remove(), 1300);
+    }
+    return;
+  }
+  box.innerHTML = '';
+  const el = new Image(); el.alt = '';
+  el.src = `${P.img}ori/${name}.png`;
+  el.className = (mode === 'rise' && !G.fast && !G.skip) ? 'rise' : 'breathe';
+  box.append(el);
+  if (G.fast || G.skip){ el.style.transition = 'none'; el.style.opacity = 1; }
+  else requestAnimationFrame(() => requestAnimationFrame(() => el.style.opacity = 1));
+}
+function cg(name, mode){
+  const el = $('#cgimg');
+  const ms = (G.fast || G.skip || mode === 'cut') ? 0 : mode === 'slow' ? 1800 : 900;
+  el.style.transitionDuration = ms + 'ms';
+  if (name === 'off'){ el.style.opacity = 0; el.dataset.on = ''; return; }
+  el.src = `${P.img}cg/${name}.png`; el.dataset.on = '1';
+  void el.offsetWidth; el.style.opacity = 1;
+}
+function fxImg(def, extraCls){
+  if (G.fast || G.skip) return;
+  const el = new Image(); el.alt = '';
+  el.src = `${P.img}fx/${def.file}.png`;
+  el.className = 'fxi ' + def.cls + (extraCls ? ' ' + extraCls : '');
+  $('#fx').append(el);
+  setTimeout(() => el.remove(), def.ms + 80);
+}
+function flash(color, ms){
+  if (G.fast || G.skip) return;
+  const el = $('#flash');
+  el.style.background = FLASH[color] || color || '#fff';
+  el.animate([{ opacity:.95 }, { opacity:0 }], { duration: +ms || 520, easing:'ease-out' });
+}
+function shake(cls){
+  if (G.fast || G.skip) return;
+  game.classList.remove('shake', 'shakebig'); void game.offsetWidth; game.classList.add(cls);
+  setTimeout(() => game.classList.remove(cls), cls === 'shakebig' ? 920 : 470);
+}
+function glitch(){
+  if (G.fast || G.skip) return;
+  const s = $('#scene'); s.classList.remove('glitch'); void s.offsetWidth; s.classList.add('glitch');
+  setTimeout(() => s.classList.remove('glitch'), 520);
+}
+function fx(a){
+  const [k, p1, p2] = a;
+  if (k === 'shake') return shake('shake');
+  if (k === 'shakebig') return shake('shakebig');
+  if (k === 'flash') return flash(p1, p2);
+  if (k === 'glitch') return glitch();
+  if (k === 'kanji'){
+    if (G.fast || G.skip) return;
+    fxImg({ file:'kanji_' + p1, cls:'fx-kanji', ms: p2 === 'long' ? 3600 : 1800 }, p2 === 'long' ? 'long' : '');
+    return;
+  }
+  if (FXDEF[k]) fxImg(FXDEF[k]);
+}
+function fade(target, ms){
+  const el = $('#fade');
+  ms = +ms || 800;
+  if (G.fast || G.skip) ms = 0;
+  if (target === 'clear'){ el.style.transitionDuration = ms + 'ms'; el.style.opacity = 0; el.dataset.st = 'clear'; return sleep(ms); }
+  const color = target === 'white' ? '#fff' : '#000';
+  if (!el.dataset.st || el.dataset.st === 'clear'){ el.style.transitionDuration = '0ms'; el.style.background = color; void el.offsetWidth; }
+  else el.style.background = color;
+  el.style.transitionDuration = ms + 'ms'; el.style.opacity = 1; el.dataset.st = target;
+  return sleep(ms);
+}
+function setFadeInstant(target){
+  const el = $('#fade'); el.style.transitionDuration = '0ms';
+  el.style.background = target === 'white' ? '#fff' : '#000';
+  el.style.opacity = target === 'clear' ? 0 : 1; el.dataset.st = target;
+}
+function tint(name){
+  const s = $('#scene');
+  s.className = 'layer' + (name && name !== 'none' ? ' t-' + name : '');
+  $('#vignette').classList.toggle('on', name === 'memory');
+}
+function winSet(on){
+  $('#window').classList.toggle('show', on);
+  $('#sysmenu').classList.toggle('show', on);
+  if (!on){ $('#name').classList.remove('on'); $('#text').innerHTML = ''; $('#waiticon').classList.remove('on'); }
+}
+
+/* ================= paper ================= */
+function paper(mode){
+  const el = $('#paper');
+  if (mode === 'off'){ el.classList.remove('on'); setTimeout(() => { if (!el.classList.contains('on')) el.innerHTML = ''; }, 460); return; }
+  if (mode === 'clear'){ el.innerHTML = ''; el.scrollTop = el.scrollLeft = 0; return; }
+  el.className = (mode === 'note' ? '' : mode) + ' on';
+  el.innerHTML = '';
+  el.scrollTop = el.scrollLeft = 0;
+}
+async function write(c){
+  G.linePc = G.pc - 1;
+  const el = $('#paper');
+  if (!el.classList.contains('on')) paper('note');
+  const p = document.createElement('p');
+  p.className = 'pl w-' + (WRITER[c.who] || 'mio');
+  el.append(p);
+  // Measure the complete note before animating it, and turn the page if needed.
+  p.textContent = c.text;
+  if (el.children.length > 1 &&
+      (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1)){
+    el.replaceChildren(p);
+    el.scrollTop = el.scrollLeft = 0;
+  }
+  p.textContent = '';
+  if (G.fast){ p.textContent = c.text; el.scrollTop = el.scrollHeight; return; }
+  winSet(true);
+  const nameEl = $('#name');
+  $('#text').textContent = c.text; $('#text').classList.remove('glitch');
+  if (c.who === '町誌'){ nameEl.classList.remove('on', 'glitch'); }
+  else {
+    nameEl.textContent = c.who === 'ひより' ? 'ひよりの日記' : c.who + 'のノート';
+    nameEl.style.setProperty('--nc', NAMECOLOR[c.who] || '#e6dccb');
+    nameEl.classList.remove('glitch'); nameEl.classList.add('on');
+  }
+  setDims(null);
+  G.log.push({ name: c.who === '町誌' ? '町誌' : c.who + '（筆談）', text: c.text });
+  if (G.log.length > 400) G.log.shift();
+  G.lastLen = c.text.length;
+  const pen = c.who !== '町誌' ? se(c.who === 'ひより' ? 'se_pen_soft' : 'se_pen_write') : null;
+  try { await typeInto(p, c.text, 1.6); }
+  finally { if (pen) pen.pause(); }
+  el.scrollTop = el.scrollHeight;
+  await waitClick();
+}
+
+/* ================= text ================= */
+async function typeInto(el, text, slow){
+  G.typing = true; G.typeSkip = false;
+  const tok = G.token;
+  const span = document.createElement('span'); el.append(span);
+  const base = cfg.text * (slow || 1);
+  if (G.skip || base <= 0){ span.textContent = text; if (el.parentElement?.id === 'paper') el.parentElement.scrollTop = el.parentElement.scrollHeight; G.typing = false; return; }
+  for (let i = 0; i < text.length; i++){
+    if (G.typeSkip || G.skip || tok !== G.token){ span.textContent = text; break; }
+    span.textContent = text.slice(0, i + 1);
+    if (el.parentElement?.id === 'paper') el.parentElement.scrollTop = el.parentElement.scrollHeight;
+    const ch = text[i];
+    let d = base;
+    if ('、，'.includes(ch)) d = base * 4;
+    else if ('。！？'.includes(ch)) d = base * 7;
+    else if ('…―'.includes(ch)) d = base * 2.5;
+    await raw(d);
+  }
+  G.typing = false;
+}
+async function say(c){
+  G.linePc = G.pc - 1;
+  if (G.fast) return;
+  winSet(true);
+  const nameEl = $('#name'), textEl = $('#text');
+  if (!c.append) textEl.innerHTML = '';
+  if (c.name){
+    nameEl.textContent = c.name; nameEl.classList.add('on');
+    nameEl.style.setProperty('--nc', c.glitch ? '#cfd2e0' : (NAMECOLOR[c.name] || '#e6dccb'));
+    nameEl.classList.toggle('glitch', c.glitch);
+  } else { nameEl.classList.remove('on', 'glitch'); }
+  textEl.classList.toggle('glitch', c.glitch);
+  if (c.glitch) glitch();
+  setDims(c.glitch ? 'shadow' : SPEAKER[c.name]);
+  G.lastLen = c.text.length;
+  G.log.push({ name:c.name, text:c.text });
+  if (G.log.length > 400) G.log.shift();
+  await typeInto(textEl, c.text);
+  await waitClick();
+}
+
+/* ================= full screen cards ================= */
+async function center(text){
+  if (G.fast) return;
+  winSet(false);
+  const el = $('#center');
+  el.style.pointerEvents = 'auto';
+  if (!G.centerOn){ el.innerHTML = ''; el.style.opacity = 1; G.centerOn = true; await sleep(700); }
+  const p = document.createElement('p'); p.textContent = text; el.append(p);
+  void p.offsetWidth; p.classList.add('on');
+  G.log.push({ name:'', text });
+  await sleep(1600);
+  G.lastLen = text.length;
+  await waitClick();
+}
+async function centerOff(){
+  if (!G.centerOn) return;
+  const el = $('#center'); G.centerOn = false;
+  el.style.opacity = 0; el.style.pointerEvents = 'none';
+  await sleep(1400);
+  if (!G.centerOn) el.innerHTML = '';
+}
+async function chapter(rawText){
+  if (G.fast) return;
+  if (G.ctrlSkip !== true) setSkip(false);
+  winSet(false);
+  const [no, title] = rawText.split('|');
+  const el = $('#chapter');
+  el.innerHTML = `<div class="ci"><div class="cn"></div><div class="cl"></div><div class="ct"></div></div>`;
+  el.querySelector('.cn').textContent = no;
+  el.querySelector('.ct').textContent = title;
+  el.style.transitionDuration = '900ms';
+  el.style.opacity = 1;
+  se('se_chapter_bell');
+  await sleep(1500);
+  await Promise.race([sleep(3600), waitClick()]);
+  if (G.advanceR) G.advanceR();
+  el.style.opacity = 0;
+  await sleep(900);
+  el.innerHTML = '';
+}
+async function credits(){
+  const tok = G.token;
+  winSet(false); paper('off');
+  stopLoop('amb', 2000);
+  playLoop('bgm', 'bgm_ending', 2000);
+  const el = $('#ending');
+  el.innerHTML = '<div class="roll"></div>';
+  const roll = el.querySelector('.roll');
+  const lines = [
+    ['big','灯守のことづて'],
+    ['','陽ノ森ひより'],['','汐見澪'],['','鴉丸ちとせ'],['','ぼんぼり'],['gap',''],
+    ['','陽ノ森家のみなさん'],['','汐見家のみなさん'],['','かもめ屋のおばさん'],['','潮見の町のみなさん'],['gap',''],
+    ['','言問岬の灯籠'],['gap',''],
+    ['','原作　小説「灯守のことづて」'],['gap',''],
+    ['','言えなかった言葉を'],['','抱えているすべての人へ'],
+    ['fin','おわり']
+  ];
+  for (const [k, t] of lines){
+    const s = document.createElement('span');
+    s.className = k; s.textContent = t; if (!k) s.style.display = 'block';
+    roll.append(s);
+  }
+  el.style.pointerEvents = 'auto';
+  el.classList.add('on');
+  await sleep(2200);
+  const h = roll.offsetHeight + el.offsetHeight;
+  const dur = 42000;
+  const anim = roll.animate([{ transform:'translateY(0)' }, { transform:`translateY(-${h - el.offsetHeight * .55}px)` }],
+    { duration:dur, easing:'linear', fill:'forwards' });
+  await Promise.race([anim.finished.catch(()=>{}), new Promise(r => { const done = () => { G.pend.delete(done); r(); }; G.pend.add(done); el.onclick = done; })]);
+  if (tok !== G.token) return;
+  anim.finish();
+  flags.allclear = true; store.set('flags', flags);
+  await sleep(3500);
+  el.classList.remove('on');
+  await sleep(2000);
+  el.style.pointerEvents = 'none'; el.innerHTML = ''; el.onclick = null;
+  if (tok === G.token) toTitle();
+}
+
+/* ================= particles ================= */
+const cv = $('#particles'), ctx = cv.getContext('2d');
+const PT = { on:new Set(), list:[], sprites:{}, lantern:null, w:0, h:0 };
+function glowSprite(color, size){
+  const c = document.createElement('canvas'); c.width = c.height = size;
+  const g = c.getContext('2d'), r = size / 2;
+  const grd = g.createRadialGradient(r, r, 0, r, r, r);
+  grd.addColorStop(0, 'rgba(255,255,255,1)'); grd.addColorStop(.25, color); grd.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = grd; g.fillRect(0, 0, size, size); return c;
+}
+PT.sprites.gold = glowSprite('rgba(255,214,120,.85)', 64);
+PT.sprites.embers = glowSprite('rgba(255,140,60,.85)', 64);
+PT.sprites.ink = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d');
+  const grd = g.createRadialGradient(32,32,0,32,32,32); grd.addColorStop(0,'rgba(8,8,16,.9)'); grd.addColorStop(1,'rgba(8,8,16,0)');
+  g.fillStyle = grd; g.fillRect(0,0,64,64); return c; })();
+PT.lantern = new Image(); PT.lantern.src = P.img + 'fx/lantern_light.png';
+function resizeCanvas(){
+  const r = game.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d);
+  PT.w = cv.width; PT.h = cv.height;
+}
+new ResizeObserver(resizeCanvas).observe(game);
+function particles(type, state){
+  if (type === 'off'){ PT.on.clear(); PT.list.length = 0; return; }
+  if (state === 'off') PT.on.delete(type); else PT.on.add(type);
+}
+function spawn(type, burstMode){
+  const W = PT.w, H = PT.h, u = W / 1000;
+  const p = { type, life:0 };
+  if (burstMode){
+    const a = Math.random() * Math.PI * 2, s = (2 + Math.random() * 6) * u;
+    Object.assign(p, { x:W/2, y:H*.45, vx:Math.cos(a)*s, vy:Math.sin(a)*s - u, size:(10+Math.random()*22)*u, max:90+Math.random()*60, sprite:'gold' });
+    return p;
+  }
+  switch (type){
+    case 'gold': Object.assign(p, { x:Math.random()*W, y:H*(.2+Math.random()*.8), vx:(Math.random()-.5)*.4*u, vy:-(.3+Math.random()*.8)*u, size:(8+Math.random()*20)*u, max:200+Math.random()*160, sprite:'gold' }); break;
+    case 'embers': Object.assign(p, { x:Math.random()*W, y:H+10, vx:(Math.random()-.5)*1.2*u, vy:-(1.5+Math.random()*2.5)*u, size:(6+Math.random()*14)*u, max:160+Math.random()*80, sprite:'embers' }); break;
+    case 'ink': Object.assign(p, { x:Math.random()*W, y:H*(.5+Math.random()*.6), vx:(Math.random()-.5)*.6*u, vy:-(.2+Math.random()*.5)*u, size:(30+Math.random()*60)*u, max:220+Math.random()*120, sprite:'ink' }); break;
+    case 'rain': Object.assign(p, { x:Math.random()*W*1.2, y:-20, vx:-4*u, vy:(26+Math.random()*10)*u, size:(14+Math.random()*16)*u, max:60 }); break;
+    case 'lanterns': Object.assign(p, { x:Math.random()*W, y:H*(.7+Math.random()*.4), vx:(Math.random()-.5)*.5*u, vy:-(.6+Math.random()*1)*u, size:(22+Math.random()*30)*u, max:420+Math.random()*200, ph:Math.random()*6 }); break;
+  }
+  return p;
+}
+const RATE = { gold:1.2, embers:1.5, ink:.5, rain:9, lanterns:.45 };
+function burst(){ if (G.fast || G.skip) return; for (let i = 0; i < 70; i++) PT.list.push(spawn('gold', true)); }
+function tick(){
+  requestAnimationFrame(tick);
+  if (!PT.w) resizeCanvas();
+  ctx.clearRect(0, 0, PT.w, PT.h);
+  for (const t of PT.on){ let r = RATE[t] || 1; while (r > 0){ if (Math.random() < r) PT.list.push(spawn(t)); r -= 1; } }
+  if (PT.list.length > 900) PT.list.splice(0, PT.list.length - 900);
+  ctx.globalCompositeOperation = 'source-over';
+  for (let i = PT.list.length - 1; i >= 0; i--){
+    const p = PT.list[i]; p.life++;
+    p.x += p.vx; p.y += p.vy;
+    const k = p.life / p.max;
+    if (k >= 1 || p.y > PT.h + 60){ PT.list.splice(i, 1); continue; }
+    if (p.type === 'rain'){
+      ctx.strokeStyle = 'rgba(190,205,230,.35)'; ctx.lineWidth = Math.max(1, PT.w / 1400);
+      ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x + p.vx * .8, p.y + p.size); ctx.stroke();
+      continue;
+    }
+    const alpha = Math.sin(Math.PI * k);
+    if (p.type === 'lanterns'){
+      if (PT.lantern.complete && PT.lantern.naturalWidth){
+        ctx.globalAlpha = alpha * (.75 + .25 * Math.sin(p.life / 9 + p.ph));
+        const w = p.size, h = p.size * (PT.lantern.naturalHeight / PT.lantern.naturalWidth);
+        ctx.drawImage(PT.lantern, p.x - w/2, p.y - h/2, w, h);
+      }
+      p.x += Math.sin(p.life / 40 + p.ph) * .3;
+      continue;
+    }
+    if (p.type === 'gold' || p.type === 'embers') p.x += Math.sin(p.life / 25) * .25;
+    ctx.globalAlpha = p.type === 'ink' ? alpha * .55 : alpha;
+    if (p.type !== 'ink') ctx.globalCompositeOperation = 'lighter';
+    const s = p.size;
+    ctx.drawImage(PT.sprites[p.sprite], p.x - s/2, p.y - s/2, s, s);
+    ctx.globalCompositeOperation = 'source-over';
+  }
+  ctx.globalAlpha = 1;
+}
+requestAnimationFrame(tick);
+
+/* ================= exec / run ================= */
+async function exec(c){
+  if (c.t === 'text') return say(c);
+  if (c.t === 'write') return write(c);
+  const a = c.a;
+  switch (c.c){
+    case 'bg': return bg(a[0], a[1]);
+    case 'show': return show(a[0], a[1], a[2], a[3]);
+    case 'hide': return hide(a[0], a[1]);
+    case 'hideall': return hideAll();
+    case 'ori': return ori(a[0], a[1]);
+    case 'cg': return cg(a[0], a[1]);
+    case 'fx': return fx(a);
+    case 'fade': return fade(a[0], a[1]);
+    case 'tint': return tint(a[0]);
+    case 'particles': return particles(a[0], a[1]);
+    case 'paper': return paper(a[0]);
+    case 'bgm': return a[0] === 'stop' ? stopLoop('bgm', a[1]) : playLoop('bgm', a[0], a[1]);
+    case 'amb': return a[0] === 'stop' ? stopLoop('amb', a[1]) : playLoop('amb', a[0], a[1]);
+    case 'se': return se(a[0]);
+    case 'wait': return sleep(+a[0] || 0);
+    case 'window': return winSet(a[0] === 'on');
+    case 'center': return center(c.raw);
+    case 'centeroff': return centerOff();
+    case 'chapter': return chapter(c.raw);
+    case 'flag': flags[a[0]] = true; store.set('flags', flags); return;
+    case 'end': return credits();
+  }
+}
+async function run(tok){
+  G.running = true;
+  while (G.token === tok){
+    const s = SCRIPTS[EPS[G.epi]];
+    if (G.pc >= s.length){
+      flags[EPS[G.epi]] = true; store.set('flags', flags);
+      if (G.epi < EPS.length - 1){ G.epi++; G.pc = 0; resetStage(); continue; }
+      return;
+    }
+    const c = s[G.pc]; G.pc++;
+    await exec(c);
+  }
+}
+function resetStage(){
+  hideAll(); ori('off', 'cut'); cg('off', 'cut'); tint('none');
+  $('#fx').innerHTML = ''; paper('off'); $('#paper').innerHTML = '';
+  particles('off'); winSet(false); setHidden(false);
+  $('#center').style.opacity = 0; $('#center').innerHTML = ''; G.centerOn = false;
+  $('#chapter').style.opacity = 0; $('#chapter').innerHTML = '';
+  setFadeInstant('black');
+}
+function startEp(i, pc){
+  abort();
+  $('#title').classList.remove('on');
+  stopAllAudio(); resetStage();
+  G.epi = i; G.pc = pc || 0; G.log = [];
+  setAuto(false); setSkip(false);
+  const tok = G.token;
+  run(tok);
+}
+
+/* ================= save / load ================= */
+function saveSlot(n){
+  const last = G.log[G.log.length - 1];
+  const d = { epi:G.epi, pc:G.linePc, time:Date.now(), excerpt: last ? (last.name ? last.name + '　' : '') + last.text : '' };
+  const all = store.get('saves', {}); all[n] = d; store.set('saves', all);
+}
+async function loadSlot(n){
+  const d = store.get('saves', {})[n]; if (!d) return;
+  abort();
+  $('#title').classList.remove('on');
+  stopAllAudio(); resetStage();
+  G.epi = d.epi; G.pc = 0; G.log = []; G.want = { bgm:'', amb:'' };
+  setAuto(false); setSkip(false);
+  const s = SCRIPTS[EPS[G.epi]];
+  G.fast = true;
+  while (G.pc < d.pc && G.pc < s.length){ const c = s[G.pc]; G.pc++; await exec(c); }
+  G.fast = false;
+  if (G.want.bgm) playLoop('bgm', G.want.bgm, 800);
+  if (G.want.amb) playLoop('amb', G.want.amb, 800);
+  // replay paper contents already appended; restore visual fade state
+  const tok = G.token;
+  run(tok);
+}
+
+/* ================= modals ================= */
+function openModal(kind, html, onBind){
+  G.modal = kind; clearTimeout(G.autoT);
+  const m = $('#modal');
+  m.innerHTML = `<div class="panel"><button class="close" data-close>閉じる</button>${html}</div>`;
+  m.classList.add('on');
+  m.querySelector('[data-close]').onclick = closeModal;
+  if (onBind) onBind(m);
+  const f = m.querySelector('button:not([data-close]),input'); (f || m.querySelector('[data-close]')).focus();
+}
+function closeModal(){ $('#modal').classList.remove('on'); $('#modal').innerHTML = ''; G.modal = null; game.focus(); schedAuto(); }
+function esc(s){ return String(s).replace(/[&<>"]/g, ch => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[ch])); }
+function slotsHTML(){
+  const all = store.get('saves', {});
+  let h = '<div class="slots">';
+  for (let i = 1; i <= 8; i++){
+    const d = all[i];
+    const dt = d ? new Date(d.time) : null;
+    const when = dt ? `${dt.getMonth()+1}/${dt.getDate()} ${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}` : '';
+    h += `<button class="slot" data-slot="${i}"><div class="s1">${i}　${d ? esc(EPNAME[EPS[d.epi]]) + '　' + when : '空き'}</div><div class="s2">${d ? esc(d.excerpt) : ''}</div></button>`;
+  }
+  return h + '</div>';
+}
+function openSave(){
+  openModal('save', `<h2>セーブ</h2><div class="body">${slotsHTML()}</div>`, m => {
+    m.querySelectorAll('[data-slot]').forEach(b => b.onclick = () => { saveSlot(+b.dataset.slot); se('se_save'); closeModal(); });
+  });
+}
+function openLoad(){
+  openModal('load', `<h2>ロード</h2><div class="body">${slotsHTML()}</div>`, m => {
+    m.querySelectorAll('[data-slot]').forEach(b => b.onclick = () => {
+      const d = store.get('saves', {})[b.dataset.slot]; if (!d) return;
+      closeModal(); loadSlot(b.dataset.slot);
+    });
+  });
+}
+function openLog(){
+  if (!G.log.length) return;
+  const h = G.log.map(l => `<p>${l.name ? `<span class="ln" style="color:${NAMECOLOR[l.name.replace('（筆談）','')] || '#cfc6b4'}">${esc(l.name)}</span>` : ''}${esc(l.text)}</p>`).join('');
+  openModal('log', `<h2>ログ</h2><div class="body log">${h}</div>`, m => { const b = m.querySelector('.body'); b.scrollTop = b.scrollHeight; });
+}
+function openConfig(){
+  const row = (k, label, min, max, step) => `<label>${label}<input type="range" data-k="${k}" min="${min}" max="${max}" step="${step}" value="${cfg[k]}"></label>`;
+  openModal('config', `<h2>設定</h2><div class="body cfg">
+    ${row('text','文字の速さ（左ほど速い）',0,80,2)}
+    ${row('auto','オートの待ち時間',500,4000,100)}
+    ${row('bgm','音楽の音量',0,1,.05)}
+    ${row('amb','環境音の音量',0,1,.05)}
+    ${row('se','効果音の音量',0,1,.05)}
+    <p style="color:var(--washi-dim);font-size:1.15cqw;line-height:2">クリック・Enter・スペースで進む／Ctrlを押している間スキップ／右クリックかEscでウィンドウを隠す／ホイール上でログ／Aでオート</p>
+  </div>`, m => {
+    m.querySelectorAll('input').forEach(inp => inp.oninput = () => {
+      cfg[inp.dataset.k] = +inp.value; store.set('cfg', cfg);
+      if (AU.bgm.el) AU.bgm.el.volume = cfg.bgm;
+      if (AU.amb.el) AU.amb.el.volume = cfg.amb;
+    });
+  });
+}
+function openChapters(){
+  let h = '<div class="chlist">';
+  EPS.forEach((k, i) => {
+    const open = i === 0 || flags[EPS[i-1]];
+    h += `<button data-ep="${i}" ${open ? '' : 'disabled'}>${open ? esc(EPNAME[k]) : '？？？'}</button>`;
+  });
+  h += '</div>';
+  openModal('chapter', `<h2>話をえらぶ</h2><div class="body">${h}</div>`, m => {
+    m.querySelectorAll('[data-ep]').forEach(b => b.onclick = () => { closeModal(); startEp(+b.dataset.ep, 0); });
+  });
+}
+$('#sysmenu').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const act = b.dataset.act;
+  if (act === 'log') openLog();
+  if (act === 'auto') setAuto(!G.auto);
+  if (act === 'skip') setSkip(!G.skip);
+  if (act === 'save') openSave();
+  if (act === 'load') openLoad();
+  if (act === 'config') openConfig();
+  if (act === 'title') openModal('confirm', `<h2>タイトルにもどる</h2><div class="body"><p>セーブしていない進み具合は失われます。</p><button class="slot" data-yes style="max-width:20em">タイトルにもどる</button></div>`, m => {
+    m.querySelector('[data-yes]').onclick = () => { closeModal(); toTitle(); };
+  });
+});
+
+/* ================= title ================= */
+function toTitle(){
+  abort(); stopAllAudio(); resetStage();
+  setAuto(false); setSkip(false);
+  const t = $('#title');
+  let img = 'title_main', music = 'bgm_title';
+  if (flags.allclear){ img = 'title_after_end'; music = 'bgm_title_end'; }
+  else if (flags.ep1){ img = 'title_after_ep1'; music = 'bgm_title_after'; }
+  t.style.backgroundImage = `url("${P.img}title/${img}.png")`;
+  t.querySelector('[data-t=load]').disabled = !Object.keys(store.get('saves', {})).length;
+  t.classList.add('on');
+  playLoop('bgm', music, 2000);
+}
+$('#title').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || b.disabled) return;
+  se('se_select');
+  const k = b.dataset.t;
+  if (k === 'start') startEp(0, 0);
+  if (k === 'load') openLoad();
+  if (k === 'chapter') openChapters();
+  if (k === 'config') openConfig();
+});
+
+/* ================= boot / preload ================= */
+function collectAssets(){
+  const set = new Set();
+  const add = p => set.add(P.img + p + '.png');
+  for (const k of EPS) for (const c of SCRIPTS[k]){
+    if (c.t !== 'cmd') continue;
+    const a = c.a;
+    if (c.c === 'bg' && a[0] !== 'black') add('bg/' + a[0]);
+    if (c.c === 'show' && a[1] && a[1] !== '-') add('chara/' + a[0] + '_' + a[1]);
+    if (c.c === 'ori' && a[0] !== 'off') add('ori/' + a[0]);
+    if (c.c === 'cg' && a[0] !== 'off') add('cg/' + a[0]);
+    if (c.c === 'fx' && a[0] === 'kanji') add('fx/kanji_' + a[1]);
+    if (c.c === 'fx' && FXDEF[a[0]]) add('fx/' + FXDEF[a[0]].file);
+  }
+  ['ui/textbox','ui/namebox','ui/wait_lantern','ui/notebook','ui/diary','ui/old_book','ui/title_logo','fx/lantern_light',
+   'title/title_main','title/title_after_ep1','title/title_after_end'].forEach(add);
+  return [...set];
+}
+const boot = $('#boot');
+const list = collectAssets();
+let loaded = 0;
+const bar = boot.querySelector('.bp i');
+let failed = 0;
+const bootStatus = boot.querySelector('.bs');
+bootStatus.textContent = '画像を読み込んでいます… 初回は少し時間がかかります';
+list.forEach(src => {
+  const im = new Image();
+  const finish = ok => {
+    loaded++; if (!ok) failed++;
+    bar.style.width = (loaded / list.length * 100) + '%';
+    bootStatus.textContent = loaded === list.length
+      ? (failed ? '読み込みに失敗しました。画面に触れて再読み込み' : '画面に触れてはじめる（音が出ます）')
+      : '画像を読み込んでいます… ' + Math.floor(loaded / list.length * 100) + '%';
+  };
+  im.onload = () => finish(true); im.onerror = () => finish(false); im.src = src;
+});
+boot.addEventListener('click', e => {
+  if (loaded < list.length || failed) {
+    e.stopImmediatePropagation();
+    if (failed && loaded === list.length) location.reload();
+  }
+}, true);
+boot.addEventListener('click', () => {
+  boot.style.transition = 'opacity 1s'; boot.style.opacity = 0;
+  setTimeout(() => boot.remove(), 1000);
+  game.focus();
+  toTitle();
+}, { once:true });
+
+})();
+
+</script>
+</body>
+</html>

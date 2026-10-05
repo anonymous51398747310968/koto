@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>灯守のことづて</title>
+<style>
+html,body{height:100%;margin:0;background:#04050a;color:#efe7d4;font-family:serif}
+main{position:fixed;inset:0;display:grid;place-content:center;text-align:center;padding:2em}
+h1{font-weight:400;letter-spacing:.15em}p{line-height:1.8;color:#b9b2a2}
+button{font:inherit;color:#efe7d4;background:#252536;border:1px solid #b9b2a2;padding:.7em 2em;margin:auto;cursor:pointer}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#04050a}
+</style>
+<main id="loading"><h1>灯守のことづて</h1><p id="status">ゲームの準備をしています…</p><button id="retry" hidden>再読み込み</button></main>
+<script>
+(async () => {
+  const status = document.getElementById('status');
+  const retry = document.getElementById('retry');
+  retry.onclick = () => location.reload();
+  try {
+    if (!('serviceWorker' in navigator)) throw new Error('HTTPSに対応したブラウザで開いてください。');
+    await navigator.serviceWorker.register('./sw.js', {scope:'./',updateViaCache:'none'});
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller) await new Promise((resolve,reject) => {
+      const timer = setTimeout(() => reject(new Error('準備に時間がかかっています。再読み込みしてください。')), 20000);
+      navigator.serviceWorker.addEventListener('controllerchange', () => { clearTimeout(timer); resolve(); }, {once:true});
+      if (navigator.serviceWorker.controller) { clearTimeout(timer); resolve(); }
+    });
+    const frame = document.createElement('iframe');
+    frame.title = '灯守のことづて';
+    frame.allow = 'autoplay; fullscreen';
+    frame.src = './game.html?v=e3cf90e9032c8365';
+    frame.onload = () => { document.getElementById('loading').hidden = true; frame.focus(); };
+    document.body.append(frame);
+  } catch (error) {
+    status.textContent = error.message || '読み込みに失敗しました。再読み込みしてください。';
+    retry.hidden = false;
+  }
+})();
+</script>
+</html>

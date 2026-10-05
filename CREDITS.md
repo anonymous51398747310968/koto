@@ -1,0 +1,113 @@
+# 音声素材クレジット
+
+すべて CC0。クレジット表記は不要です。各行の元ファイルを指定形式へ変換・音量調整しました。
+
+- `bgm/bgm_title.mp3` — 元: `extra/emotional_piano_2.ogg` | 作者: Centurion_of_war | ライセンス: CC0（表記不要） | https://opengameart.org/content/emotional-piano-0
+- `bgm/bgm_title_after.mp3` — 元: `extra/emotional_piano_solo_0.ogg` | 作者: Centurion_of_war | ライセンス: CC0（表記不要） | https://opengameart.org/content/emotional-piano-0
+- `bgm/bgm_title_end.mp3` — 元: `extra/forget_me_not_in_f_major_looped.ogg` | 作者: Kistol | ライセンス: CC0（表記不要） | https://opengameart.org/content/forget-me-not
+- `bgm/bgm_night_patrol.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/moon.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_comedy.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/happtroll.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_school.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/tutorial.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_sea_quiet.mp3` — 元: `extra/pianoemo139_0.ogg` | 作者: Tozan | ライセンス: CC0（表記不要） | https://opengameart.org/content/piano-emotional-solo-139
+- `bgm/bgm_crisis.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/burned_village.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_battle_hiyori.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/battle.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_sunset_bench.mp3` — 元: `extra/piano1.4_0.ogg` | 作者: Centurion_of_war | ライセンス: CC0（表記不要） | https://opengameart.org/content/happy-moments
+- `bgm/bgm_grief.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/underground.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_rain_mourning.mp3` — 元: `extra/softpiano8.ogg` | 作者: Tozan | ライセンス: CC0（表記不要） | https://opengameart.org/content/pianosoft8
+- `bgm/bgm_bonbori.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/tivoli.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_grief_piano.mp3` — 元: `extra/solopiano4_1.ogg` | 作者: Tozan | ライセンス: CC0（表記不要） | https://opengameart.org/content/solo-piano-4
+- `bgm/bgm_truth.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/keep.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_run.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/chase.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_contract.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/castle.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_battle_mio.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/boss.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_night_calm.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/moon2.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_notebook.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/loadsave.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_incense.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/monastery.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_diary.mp3` — 元: `extra/pianoemo10_0.ogg` | 作者: Tozan | ライセンス: CC0（表記不要） | https://opengameart.org/content/piano-emo-10
+- `bgm/bgm_shadow_lullaby.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/underwater.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_shadow_rage.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/final_boss.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_research.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/map2.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_confession.mp3` — 元: `extra/piano_nostalgia.ogg` | 作者: Wolfgang_ | ライセンス: CC0（表記不要） | https://opengameart.org/content/regret-short-emotional-piano
+- `bgm/bgm_cape_dread.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/fortress.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_final_battle.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/volcano.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_bonbori_last.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/shyzu.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_todoku.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/credits.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_dawn.mp3` — 元: `extra/first_light_particles_0.wav` | 作者: Yoiyami | ライセンス: CC0（表記不要） | https://opengameart.org/content/first-light-particles-%E2%80%93-cc0-atmospheric-pianoambient-track
+- `bgm/bgm_epilogue.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/seaside_repaired.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_hiyori_piano.mp3` — 元: `extra/softpiano20_0.ogg` | 作者: Tozan | ライセンス: CC0（表記不要） | https://opengameart.org/content/softpiano20
+- `bgm/bgm_home.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/jungle_shop.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `bgm/bgm_ending.mp3` — 元: `monster/Monster RPG 2 OGG Music - Revised/title.ogg` | 作者: Nooskewl Games / troutsneeze | ライセンス: CC0（表記不要） | https://opengameart.org/content/42-monster-rpg-2-music-tracks
+- `ambient/amb_waves_night.mp3` — 元: `extra/VistulaShort_0.mp3` | 作者: RandomMind | ライセンス: CC0（表記不要） | https://opengameart.org/content/sea-and-river-wave-sounds
+- `ambient/amb_waves_evening.mp3` — 元: `extra/VistulaShort_0.mp3` | 作者: RandomMind | ライセンス: CC0（表記不要） | https://opengameart.org/content/sea-and-river-wave-sounds
+- `ambient/amb_waves_dawn.mp3` — 元: `extra/VistulaShort_0.mp3` | 作者: RandomMind | ライセンス: CC0（表記不要） | https://opengameart.org/content/sea-and-river-wave-sounds
+- `ambient/amb_classroom.mp3` — 元: `extra/crowd_shouting_0.ogg` | 作者: StarNinjas | ライセンス: CC0（表記不要） | https://opengameart.org/content/crowd-shoutingspeaking-ambience
+- `ambient/amb_shopping_street.mp3` — 元: `extra/crowd_shouting_0.ogg` | 作者: StarNinjas | ライセンス: CC0（表記不要） | https://opengameart.org/content/crowd-shoutingspeaking-ambience
+- `ambient/amb_night_street.mp3` — 元: `owlish/Ambience/night-crickets-ambience-on-rural-property.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `ambient/amb_hospital.mp3` — 元: `rubberduck2/sfx100v2_loop_machine_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx-2
+- `ambient/amb_rain.mp3` — 元: `rain/1.ogg` | 作者: Ylmir | ライセンス: CC0（表記不要） | https://opengameart.org/content/rain-loopable
+- `ambient/amb_wind_cape.mp3` — 元: `extra/wind1.wav` | 作者: Luke.RUSTLTD | ライセンス: CC0（表記不要） | https://opengameart.org/content/wind1
+- `ambient/amb_birds_cemetery.mp3` — 元: `extra/birds-isaiah658.ogg` | 作者: isaiah658 | ライセンス: CC0（表記不要） | https://opengameart.org/content/ambient-bird-sounds
+- `se/se_select.mp3` — 元: `rubberduck1/bell_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_save.mp3` — 元: `rubberduck1/plop_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_chapter_bell.mp3` — 元: `rubberduck1/gong_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_transform.mp3` — 元: `rpg/spell_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/node/86018
+- `se/se_arrow_draw.mp3` — 元: `rubberduck2/sfx100v2_air_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx-2
+- `se/se_arrow_shot.mp3` — 元: `rubberduck2/sfx100v2_air_02.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx-2
+- `se/se_arrow_rain.mp3` — 元: `rubberduck2/sfx100v2_air_03.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx-2
+- `se/se_charge.mp3` — 元: `rpg/spell_fire_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/node/86018
+- `se/se_beam.mp3` — 元: `rpg/spell_fire_07.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/node/86018
+- `se/se_umbrella_open.mp3` — 元: `owlish/Cloth, Rustle/320137__owlstorm__blanket-movement-1.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_umbrella_drop.mp3` — 元: `rubberduck1/wooden_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_impact_heavy.mp3` — 元: `rubberduck2/sfx100v2_hit_03.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx-2
+- `se/se_metal_crush.mp3` — 元: `rubberduck2/sfx100v2_metal_06.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx-2
+- `se/se_wood_break.mp3` — 元: `rubberduck2/sfx100v2_wood_hit_03.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx-2
+- `se/se_jump.mp3` — 元: `rubberduck2/sfx100v2_footstep_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx-2
+- `se/se_brush.mp3` — 元: `owlish/Paper/pencil-scratch-1.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_brush_big.mp3` — 元: `owlish/Paper/pencil-scratch-2.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_kanji_activate.mp3` — 元: `rpg/spell_02.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/node/86018
+- `se/se_kanji_big.mp3` — 元: `rubberduck1/gong_02.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_crack.mp3` — 元: `rubberduck1/glass_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_glass_break.mp3` — 元: `rubberduck2/sfx100v2_glass_06.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx-2
+- `se/se_purify.mp3` — 元: `rpg/spell_fire_05.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/node/86018
+- `se/se_word_taken.mp3` — 元: `owlish/Scifi/blackhole1.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_word_return.mp3` — 元: `rubberduck1/bell_02.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_ink_bubble.mp3` — 元: `creature/burble_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/80-cc0-creature-sfx
+- `se/se_ink_lunge.mp3` — 元: `creature/monster_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/80-cc0-creature-sfx
+- `se/se_voices_whisper.mp3` — 元: `background_voices/Temple Background.mp3` | 作者: pauliuw | ライセンス: CC0（表記不要） | https://opengameart.org/content/background-voices
+- `se/se_voices_girls.mp3` — 元: `extra/children.wav` | 作者: Yaroslav_Novikov | ライセンス: CC0（表記不要） | https://opengameart.org/content/children-voices
+- `se/se_voices_town.mp3` — 元: `background_voices/Background Growl.mp3` | 作者: pauliuw | ライセンス: CC0（表記不要） | https://opengameart.org/content/background-voices
+- `se/se_whoosh_dark.mp3` — 元: `rubberduck1/weird_03.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_rumble.mp3` — 元: `owlish/Ambience/earthquake.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_rumble_distant.mp3` — 元: `rubberduck2/sfx100v2_thunder_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx-2
+- `se/se_charge_dark.mp3` — 元: `owlish/Scifi/blackhole2.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_distant_clash.mp3` — 元: `rubberduck2/sfx100v2_metal_hit_02.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx-2
+- `se/se_bon.mp3` — 元: `rubberduck1/plop_02.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_bon_soft.mp3` — 元: `rubberduck1/plop_02.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_lantern_ignite.mp3` — 元: `rpg/spell_fire_06.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/node/86018
+- `se/se_lantern_extinguish.mp3` — 元: `rpg/spell_fire_02.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/node/86018
+- `se/se_soft_chime.mp3` — 元: `rubberduck1/bell_03.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_school_bell.mp3` — 元: `rubberduck1/bell_03.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_chair.mp3` — 元: `rubberduck1/wooden_02.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_cough.mp3` — 元: `owlish/Human/cough2.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_class_laugh.mp3` — 元: `owlish/Human/laugh1.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_bite.mp3` — 元: `creature/eat_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/80-cc0-creature-sfx
+- `se/se_bag_crush.mp3` — 元: `owlish/Paper/crumples1.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_laugh_small.mp3` — 元: `owlish/Human/laugh1.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_paper_rustle.mp3` — 元: `rubberduck1/paper_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_plastic_bag.mp3` — 元: `owlish/Cloth, Rustle/212180__owlstorm__bag-zipper.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_wood_creak.mp3` — 元: `rubberduck2/sfx100v2_footstep_wood_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx-2
+- `se/se_door_open.mp3` — 元: `rubberduck1/door_open.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_doorbell.mp3` — 元: `extra/doorbell.wav` | 作者: frosty ham | ライセンス: CC0（表記不要） | https://opengameart.org/content/doorbell
+- `se/se_run_footsteps.mp3` — 元: `owlish/Footsteps/running-shoes-1.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_throw_clock.mp3` — 元: `owlish/Impacts/clamour3.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_battery_roll.mp3` — 元: `rubberduck1/metal_02.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_rin.mp3` — 元: `rubberduck1/gong_01.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/content/100-cc0-sfx
+- `se/se_page_turn.mp3` — 元: `owlish/Paper/pageturn1.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_notebook_close.mp3` — 元: `rpg/book_04.ogg` | 作者: rubberduck | ライセンス: CC0（表記不要） | https://opengameart.org/node/86018
+- `se/se_pen_write.mp3` — 元: `owlish/Paper/pencil-scratch-1.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_pen_soft.mp3` — 元: `owlish/Paper/pencil-scratch-2.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_pen_hard.mp3` — 元: `owlish/Paper/pencil-scratch-1.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_kitchen.mp3` — 元: `owlish/Water/kettle-boil.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_heartbeat.mp3` — 元: `extra/heartbeat_slow_0.wav` | 作者: bart | ライセンス: CC0（表記不要） | https://opengameart.org/content/heartbeat-sounds
+- `se/se_collapse.mp3` — 元: `owlish/Impacts/tap.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
+- `se/se_paper_roll.mp3` — 元: `owlish/Paper/crumples2.wav` | 作者: OwlishMedia | ライセンス: CC0（表記不要） | https://opengameart.org/content/sound-effects-pack
